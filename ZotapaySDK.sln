@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZotapaySDK", "ZotapaySDK\ZotapaySDK.csproj", "{B34191FE-CA5D-49D6-992A-A045B5FDFF41}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{162F45F2-D361-4915-A7BD-ACBA45AE8B96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Examples.csproj", "{AFAE8408-5D4C-4664-8284-DD2BA748BCAF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B34191FE-CA5D-49D6-992A-A045B5FDFF41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B34191FE-CA5D-49D6-992A-A045B5FDFF41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B34191FE-CA5D-49D6-992A-A045B5FDFF41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B34191FE-CA5D-49D6-992A-A045B5FDFF41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{162F45F2-D361-4915-A7BD-ACBA45AE8B96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{162F45F2-D361-4915-A7BD-ACBA45AE8B96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{162F45F2-D361-4915-A7BD-ACBA45AE8B96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{162F45F2-D361-4915-A7BD-ACBA45AE8B96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFAE8408-5D4C-4664-8284-DD2BA748BCAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFAE8408-5D4C-4664-8284-DD2BA748BCAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFAE8408-5D4C-4664-8284-DD2BA748BCAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFAE8408-5D4C-4664-8284-DD2BA748BCAF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {98ACA0C2-80ED-484A-B890-E0AD9F7A3492}
+	EndGlobalSection
+EndGlobal
