@@ -26,7 +26,6 @@ jobs:
     - name: Install dependencies
       run: |
         dotnet restore
-        choco install hub
       
       # build project
     - name: Build
@@ -51,8 +50,7 @@ jobs:
       # run tests with built project
     - name: Test PR      
       run: |
-        dotnet test --no-restore --no-build --configuration ${{env.config}} \
-          --logger:"liquid.md;LogFileName=${{github.workspace}}/${{env.file_name}};Title=${{env.title}};"
+        dotnet test --no-restore --no-build --configuration ${{env.config}} --logger:"liquid.md;LogFileName=${{github.workspace}}/${{env.file_name}};Title=${{env.title}};"
       
       # upload report as build artifact
     - name: Upload a Build Artifact
@@ -68,5 +66,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        hub api "repos/{owner}/{repo}/issues/${{steps.PRNUMBER.outputs.pr}}/comments" \
-          --field body=@${{github.workspace}}/${{env.file_name}}
+        hub api "repos/{owner}/{repo}/issues/${{steps.PRNUMBER.outputs.pr}}/comments" --field body=@${{github.workspace}}/${{env.file_name}}
