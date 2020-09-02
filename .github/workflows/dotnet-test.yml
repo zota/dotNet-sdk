@@ -42,7 +42,9 @@ jobs:
             if (${{ github.event_name == 'pull_request' }}) {
               echo "::set-env name=title::Test Run for PR #${{steps.PRNUMBER.outputs.pr}} (${{github.run_number}})"
               echo "::set-env name=file_name::TestReport.${{steps.PRNUMBER.outputs.pr}}.${{github.run_number}}.md"
-            } else {
+            }
+            else
+            {
               echo "::set-env name=title::Test Run ${{github.run_number}}"
               echo "::set-env name=file_name::TestReport.${{github.run_number}}.md"
             }
