@@ -51,18 +51,18 @@ jobs:
       run: dotnet test --no-restore --no-build --configuration ${{env.config}} --logger:"liquid.md;LogFileName=${{github.workspace}}/${{env.file_name}};Title=${{env.title}};"
       
       # upload report as build artifact
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2
-      if: ${{always()}}
-      with:
-        name: 'Test Run'
-        path: ${{github.workspace}}/${{env.file_name}}
+      #- name: Upload a Build Artifact
+      #uses: actions/upload-artifact@v2
+      #if: ${{always()}}
+      #with:
+      #  name: 'Test Run'
+      #  path: ${{github.workspace}}/${{env.file_name}}
       
       # add report as PR comment (if PR)
-    - name: comment PR
-      uses: machine-learning-apps/pr-comment@master
+    - name: Comment PR
+      uses: harupy/comment-on-pr@master
       if: ${{ github.event_name == 'pull_request' }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        path: ${{env.file_name}}
+        filename: ${{env.file_name}}
