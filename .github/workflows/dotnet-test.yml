@@ -21,7 +21,14 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.x' 
-      
+     
+   - uses: actions/cache@v2
+     with:
+       path: ~/.nuget/packages
+       key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+       restore-keys: |
+         ${{ runner.os }}-nuget-
+
       # restore dependencies  
     - name: Install dependencies
       run: |
@@ -38,16 +45,16 @@ jobs:
       
       # set report file and title 
     - name: Set Test Title
+      shell: pwsh
       run: | 
             if (${{ github.event_name == 'pull_request' }}) {
               echo "::set-env name=title::Test Run for PR #${{steps.PRNUMBER.outputs.pr}} (${{github.run_number}})"
               echo "::set-env name=file_name::TestReport.${{steps.PRNUMBER.outputs.pr}}.${{github.run_number}}.md"
-            }
-            else
-            {
+            } else {
               echo "::set-env name=title::Test Run ${{github.run_number}}"
               echo "::set-env name=file_name::TestReport.${{github.run_number}}.md"
             }
+          exit 0
       
       # run tests with built project
     - name: Test PR      
