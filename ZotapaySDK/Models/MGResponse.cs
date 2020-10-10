@@ -28,6 +28,6 @@
         /// When code is 200, this parameter will include the following fields: depositUrl, merchantOrderID and orderID.
         /// </summary>
         [DataMember(Name = "data", EmitDefaultValue = false)]
-        public Data Data { get; set; }
+        public ResponseData Data { get; set; }
     }
 }

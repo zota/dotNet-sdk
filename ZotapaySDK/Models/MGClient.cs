@@ -71,7 +71,7 @@
                 // Indicate failed validation and populate error message envelope
                 mGResponse.IsSuccess = false;
                 mGResponse.ErrorList = string.Join(" | ", validationResults);
-                // return mGResponse; todo
+                // return mGResponse; TODO
             }
             depositRequest.generateDepositSignature(this.endpoint, this.merchantSecret);
 

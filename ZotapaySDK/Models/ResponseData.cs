@@ -5,7 +5,7 @@
     /// <summary>
     /// Zotapay data response parameter class
     /// </summary>
-    public class Data
+    public class ResponseData
     {
         /// <summary>
         /// The URL of the payment form, merchant should redirect the (waiting) end-user to this URL (HTTP 302).

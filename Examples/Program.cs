@@ -1,21 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
 using ZotapaySDK.Models;
 using ZotapaySDK.Static;
 
 namespace Examples
 {
-
-    
     class Program
     {
-        public static void Main(string[] args)
+        static void Main(string[] args)
         {
             // Environment variables set in the code for showcase purposes
             Environment.SetEnvironmentVariable(Constants.ENV.ENDPOINT_ID, "000");
@@ -31,7 +22,7 @@ namespace Examples
                 OrderCurrency = null,
             };
 
-            
+
             MGClient client = new MGClient(useConstantUrl: true, environment: Constants.MGEnvironment.Sandbox);
             var resp = client.InitDeposit(DepositOrderRequest).ConfigureAwait(false);
 
