@@ -27,14 +27,14 @@
         /// <param name="merchantSecret">MerchantSecretKey as received from Zotapay</param>
         /// <param name="endpointId">EndpointID as received from Zotapay</param>
         /// <param name="requestUrl">Base URL, either https://api.zotapay-sandbox.com or https://api.zotapay.com</param>
-        /// <param name="client">Http client will be set as static, default is new System.Net.Http.HttpClient</param>
-        public MGClient(string merchantId, string merchantSecret, string endpointId, string requestUrl, HttpClient client = null)
+        /// <param name="httpClient">Http client will be set as static, default is new System.Net.Http.HttpClient</param>
+        public MGClient(string merchantId, string merchantSecret, string endpointId, string requestUrl, HttpClient httpClient = null)
         {
             this.merchantId = merchantId;
             this.merchantSecret = merchantSecret;
             this.endpoint = endpointId;
             this.requestUrl = requestUrl;
-            MGClient.http = client ?? new HttpClient();
+            MGClient.http = httpClient ?? new HttpClient();
         }
 
         /// <summary>
@@ -42,19 +42,21 @@
         /// </summary>
         /// <param name="useConstantUrl">Indicate wether to grab the url from constants, default is false</param>
         /// <param name="environment">Environment to be used, if constant url is true, can be Sandbox or Live, default is Live</param>
+        /// <param name="baseUrl">When useConstantUrl is set to false, base url must be passed here manually</param>
         /// <param name="client">Http client will be set as static, default is System.Net.Http.HttpClient</param>
-        public MGClient(bool useConstantUrl = true, MGEnvironment environment = MGEnvironment.Live, HttpClient client = null)
+        public MGClient(bool useConstantUrl = true, MGEnvironment environment = MGEnvironment.Live, string baseUrl = "", HttpClient httpClient = null)
         {
             this.merchantId = Environment.GetEnvironmentVariable(ENV.MERCHANT_ID);
             this.merchantSecret = Environment.GetEnvironmentVariable(ENV.MERCHANT_SECRET_KEY);
             this.endpoint = Environment.GetEnvironmentVariable(ENV.ENDPOINT_ID);
             this.requestUrl = Environment.GetEnvironmentVariable(ENV.REQUEST_URL);
+            this.requestUrl = baseUrl;
             if (useConstantUrl)
             {
                 this.requestUrl = (environment == MGEnvironment.Live) ? URL.LIVE : URL.SANDBOX;
-            }
+            } 
 
-            MGClient.http = client ?? new HttpClient();
+            MGClient.http = httpClient ?? new HttpClient();
         }
 
         /// <summary>
@@ -111,6 +113,11 @@
         {
             var result = await Send(requestPayload);
             return (MGDepositResult)result;
+        }
+
+        private string ValidateMGClient() // TODO
+        {
+            return null;
         }
     }
 }
