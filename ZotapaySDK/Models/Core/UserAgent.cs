@@ -15,6 +15,7 @@
         /// <returns>A string containing the signature for the UserAgent header.</returns>
         public static string GetUserAgentHeader()
         {
+            // TODO get the accurate/current version
             var header = new StringBuilder("Zotapay/NET-SDK " + Constants.Version.LATEST + " (");
             header.Append(string.Join(";", new string[]
             {

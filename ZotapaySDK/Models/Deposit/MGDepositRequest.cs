@@ -1,15 +1,19 @@
 ﻿namespace ZotapaySDK.Models
 {
+    using Newtonsoft.Json;
+    using System;
     using System.ComponentModel.DataAnnotations;
     using System.Runtime.Serialization;
     using System.Security.Cryptography;
     using System.Text;
+    using ZotapaySDK.Contracts;
+    using static ZotapaySDK.Static.Constants;
 
     /// <summary>
     /// Deposit request
     /// </summary>
     [DataContract]
-    public class MGDepositRequest
+    public class MGDepositRequest : IMGRequest
     {
         // todo try default without dataMember
         // OR use strategy from newtonsoft
@@ -30,7 +34,7 @@
         /// Brief order description
         /// </summary>
         [Required, StringLength(128)] 
-        [DataMember(Name = "merchantOrderDesc", IsRequired = true, EmitDefaultValue = true)]
+        [DataMember(Name = "merchantOrderDesc", IsRequired = true, EmitDefaultValue = false)]
         public string MerchantOrderDesc { get; set; }
 
         /// <summary>
@@ -59,21 +63,21 @@
         /// <summary>
         /// End user first name
         /// </summary>
-        [StringLength(50)]
+        [Required, StringLength(50)]
         [DataMember(Name = "customerFirstName", IsRequired = true, EmitDefaultValue = false)]
         public string CustomerFirstName { get; set; }
 
         /// <summary>
         /// End user last name
         /// </summary>
-        [StringLength(50)]
+        [Required, StringLength(50)]
         [DataMember(Name = "customerLastName", IsRequired = true, EmitDefaultValue = false)]
         public string CustomerLastName { get; set; }
 
         /// <summary>
         /// End user address
         /// </summary>
-        [StringLength(50)]
+        [Required, StringLength(50)]
         [DataMember(Name = "customerAddress", IsRequired = true, EmitDefaultValue = false)]
         public string CustomerAddress { get; set; }
 
@@ -81,14 +85,14 @@
         /// End user country, two-letter ISO 3166-1 Alpha-2 country code
         /// See https://doc.zotapay.com/deposit/1.0/#country-codes for a full list of country codes
         /// </summary>
-        [StringLength(2)]
+        [Required, StringLength(2)]
         [DataMember(Name = "customerCountryCode", IsRequired = true, EmitDefaultValue = false)]
         public string CustomerCountryCode { get; set; }
 
         /// <summary>
         /// End user city
         /// </summary>
-        [StringLength(50)]
+        [Required, StringLength(50)]
         [DataMember(Name = "customerCity", IsRequired = true, EmitDefaultValue = false)]
         public string CustomerCity { get; set; }
 
@@ -103,7 +107,7 @@
         /// <summary>
         /// End user postal code
         /// </summary>
-        [StringLength(10)]
+        [Required, StringLength(10)]
         [DataMember(Name = "customerZipCode", IsRequired = true, EmitDefaultValue = false)]
         public string CustomerZipCode { get; set; }
 
@@ -111,14 +115,14 @@
         /// End user full international telephone number, including country code
         /// </summary>
         [Phone]
-        [StringLength(15)]
+        [Required, StringLength(15)]
         [DataMember(Name = "customerPhone", IsRequired = true, EmitDefaultValue = false)]
         public string CustomerPhone { get; set; }
 
         /// <summary>
         /// End user IPv4/IPv6 address
         /// </summary>
-        [StringLength(20)]
+        [Required, StringLength(20)]
         [DataMember(Name = "customerIP", IsRequired = true, EmitDefaultValue = false)]
         public string CustomerIP { get; set; }
 
@@ -132,7 +136,7 @@
         /// <summary>
         /// URL for end user redirection upon transaction completion, regardless of order status
         /// </summary>
-        [StringLength(128)]
+        [Required, StringLength(128)]
         [DataMember(Name = "redirectUrl", IsRequired = true, EmitDefaultValue = false)]
         public string RedirectUrl { get; set; }
 
@@ -146,7 +150,7 @@
         /// <summary>
         /// The original URL from where the end-user started the deposit request (a URL in Merchants' website)
         /// </summary>
-        [StringLength(256)]
+        [Required, StringLength(256)]
         [DataMember(Name = "checkoutUrl", IsRequired = true, EmitDefaultValue = false)]
         public string CheckoutUrl { get; set; }
 
@@ -168,7 +172,7 @@
         /// Request checksum encrypted with SHA-256
         /// </summary>
         [DataMember(Name = "signature", IsRequired = true, EmitDefaultValue = false)]
-        private string Signature;
+        public string Signature;
 
         /// <summary>
         /// Sets the Signature property with the generated SHA-256 deposit auth signature
@@ -176,11 +180,11 @@
         /// <param name="endpointId">Zotapay supplied endpoint id</param>
         /// <param name="secret">Zotapay supplied secret key</param>
         /// <returns>The computed hash in hexadecimal formatted string</returns>
-        internal void generateDepositSignature(string endpointId, string secret)
+        public void GenerateSignature(string endpointId, string secret)
         {
+            // string to sign
             string toSign = $"{endpointId}{this.MerchantOrderID}{this.OrderAmount}{this.CustomerEmail}{secret}";
 
-            // Create a SHA256 in using block (IDisposable)
             using (SHA256 sha256Hash = SHA256.Create())
             {
                 // Get the hash in a byte array
@@ -194,6 +198,23 @@
                 }
                 this.Signature = builder.ToString().ToLower();
             }
+        }
+
+        /// <summary>
+        /// Gets the full request url
+        /// </summary>
+        /// <param name="baseUrl">Base url of the domain</param>
+        /// <param name="path">Full request path</param>
+        /// <returns>The full deposit request url</returns>
+        public string GetRequestUrl(string baseUrl, string endpoint)
+        {
+            string urlPath = string.Format(URL.PATH_DEPOSIT, endpoint);
+            return baseUrl + urlPath;
+        }
+
+        IMGResult IMGRequest.GetResultInstance()
+        {
+            return new MGDepositResult();
         }
     }
 }
