@@ -1,16 +1,17 @@
-﻿namespace ZotapaySDK.Models
-{
-    using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
+using ZotapaySDK.Contracts;
 
+namespace ZotapaySDK.Models
+{
     /// <summary>
-    /// MGResponse class represents the Zotapay API response
+    /// Wrapper class with http and validation results
     /// </summary>
-    public class MGResponse
+    public class MGDepositResult : IMGResult
     {
         /// <summary>
         /// Default constructor
         /// </summary>
-        public MGResponse() { }
+        public MGDepositResult() { }
 
         /// <summary>
         /// A status code representing the acceptance of the request by Zotapay server.
@@ -28,6 +29,20 @@
         /// When code is 200, this parameter will include the following fields: depositUrl, merchantOrderID and orderID.
         /// </summary>
         [DataMember(Name = "data", EmitDefaultValue = false)]
-        public ResponseData Data { get; set; }
+        public DepositResponseData Data { get; set; }
+
+        /// <summary>
+        /// Indicates wether the request object was valid and an actual http request was send
+        /// </summary>
+        public bool IsSuccess { get; set; }
+        IData IMGResult.Data { get { return Data; } set { }  }
+
+        string IMGResult.GetType()
+        {
+            // TODO
+            return "ZotapaySDK.Models.MGDepositResult";
+        }
+
+
     }
 }

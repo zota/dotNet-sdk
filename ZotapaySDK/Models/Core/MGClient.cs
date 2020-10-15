@@ -9,6 +9,8 @@
     using Newtonsoft.Json;
     using System.Text;
     using System.Net.Http.Headers;
+    using static ZotapaySDK.Models.UserAgent;
+    using ZotapaySDK.Contracts;
 
     public class MGClient
     {
@@ -25,14 +27,14 @@
         /// <param name="merchantSecret">MerchantSecretKey as received from Zotapay</param>
         /// <param name="endpointId">EndpointID as received from Zotapay</param>
         /// <param name="requestUrl">Base URL, either https://api.zotapay-sandbox.com or https://api.zotapay.com</param>
-        /// <param name="client">Http client will be set as static, default is System.Net.Http.HttpClient</param>
-        public MGClient(string merchantId, string merchantSecret, string endpointId, string requestUrl, HttpClient client = null)
+        /// <param name="httpClient">Http client will be set as static, default is new System.Net.Http.HttpClient</param>
+        public MGClient(string merchantId, string merchantSecret, string endpointId, string requestUrl, HttpClient httpClient = null)
         {
             this.merchantId = merchantId;
             this.merchantSecret = merchantSecret;
             this.endpoint = endpointId;
             this.requestUrl = requestUrl;
-            MGClient.http = client ?? new HttpClient();
+            MGClient.http = httpClient ?? new HttpClient();
         }
 
         /// <summary>
@@ -40,79 +42,82 @@
         /// </summary>
         /// <param name="useConstantUrl">Indicate wether to grab the url from constants, default is false</param>
         /// <param name="environment">Environment to be used, if constant url is true, can be Sandbox or Live, default is Live</param>
+        /// <param name="baseUrl">When useConstantUrl is set to false, base url must be passed here manually</param>
         /// <param name="client">Http client will be set as static, default is System.Net.Http.HttpClient</param>
-        public MGClient(bool useConstantUrl = false, MGEnvironment environment = MGEnvironment.Live, HttpClient client = null)
+        public MGClient(bool useConstantUrl = true, MGEnvironment environment = MGEnvironment.Live, string baseUrl = "", HttpClient httpClient = null)
         {
             this.merchantId = Environment.GetEnvironmentVariable(ENV.MERCHANT_ID);
             this.merchantSecret = Environment.GetEnvironmentVariable(ENV.MERCHANT_SECRET_KEY);
             this.endpoint = Environment.GetEnvironmentVariable(ENV.ENDPOINT_ID);
             this.requestUrl = Environment.GetEnvironmentVariable(ENV.REQUEST_URL);
+            this.requestUrl = baseUrl;
             if (useConstantUrl)
             {
                 this.requestUrl = (environment == MGEnvironment.Live) ? URL.LIVE : URL.SANDBOX;
-            }
+            } 
 
-            MGClient.http = client ?? new HttpClient();
+            MGClient.http = httpClient ?? new HttpClient();
         }
 
         /// <summary>
-        /// Requests deposit to Zotapay API or returns reason of failure
+        /// Requests to Zotapay API
         /// </summary>
-        /// <param name="depositRequest">Object containing data required for deposit</param>
+        /// <param name="request">Object containing data required for deposit, payout or order status check request</param>
         /// <returns>Task with the request results</returns>
-        public async Task<MGResult> InitDeposit(MGDepositRequest depositRequest)
+        private async Task<IMGResult> Send(IMGRequest request)
         {
-            MGResult mGResponse = new MGResult();
+            IMGResult result = request.GetResultInstance();
 
-            // Validate deposit request
+            // Validate request
             List<ValidationResult> validationResults = new List<ValidationResult>();
-            if (!Validator.TryValidateObject(depositRequest, new ValidationContext(depositRequest), validationResults, validateAllProperties: true))
+            if (!Validator.TryValidateObject(request, new ValidationContext(request), validationResults, validateAllProperties: true))
             {
                 // Indicate failed validation and populate error message envelope
-                mGResponse.IsSuccess = false;
-                mGResponse.ErrorList = string.Join(" | ", validationResults);
-                // return mGResponse; TODO
+                result.IsSuccess = false;
+                result.Message = string.Join(" | ", validationResults);
+                return result;
             }
-            depositRequest.generateDepositSignature(this.endpoint, this.merchantSecret);
 
-            string requestUrl = this.getRequestURL(this.requestUrl, URL.PATH_DEPOSIT);
+            // Get request specific data
+            request.GenerateSignature(this.endpoint, this.merchantSecret);
+            string requestUrl = request.GetRequestUrl(this.requestUrl, this.endpoint);
+            
             try
             {
                 // Create json payload string and wrap it as http content
-                string payload = JsonConvert.SerializeObject(depositRequest);
+                string payload = JsonConvert.SerializeObject(request);
                 var httpContent = new StringContent(payload, Encoding.UTF8, "application/json");
-                http.DefaultRequestHeaders.Add("Content-Type", "application/json");
-                
-                // request
-                var response = await http.PostAsync(requestUrl, httpContent);
+                http.DefaultRequestHeaders.Add("User-Agent", GetUserAgentHeader());
 
+                // Request & parse response async
+                var response = await http.PostAsync(requestUrl, httpContent);
+                result = (IMGResult)JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result, Type.GetType(result.GetType()));
+                result.IsSuccess = ((result.Code == API.CODE_SUCCESS) && (response.StatusCode == System.Net.HttpStatusCode.OK));
             } 
             catch (Exception e)
             {
                 // Indicate fail and reason
-                mGResponse.IsSuccess = false;
-                mGResponse.ErrorList = e.Message;
+                result.IsSuccess = false;
+                result.Message = e.Message;
             }
 
-
-            return mGResponse;
+            return result;
         }
 
         /// <summary>
-        /// Gets the full request url
+        /// Make a deposit request
         /// </summary>
-        /// <param name="baseUrl">Base url of the domain</param>
-        /// <param name="path">Full request path</param>
-        /// <returns>The full request url</returns>
-        private string getRequestURL(string baseUrl, string path)
+        /// <param name="requestPayload">Deposit request payload</param>
+        /// <returns>Task<MGDepositResult> containing Zotapay API response</returns>
+        public async Task<MGDepositResult> InitDeposit(MGDepositRequest requestPayload)
         {
-            string urlPath = string.Format(path, this.endpoint);
-            return this.requestUrl + urlPath;
+            var result = await Send(requestPayload);
+            return (MGDepositResult)result;
         }
 
-        private string generateJSONPayload(object obj)
+        private string ValidateMGClient() // TODO
         {
-            return JsonConvert.SerializeObject(obj);
+            return null;
         }
     }
 }

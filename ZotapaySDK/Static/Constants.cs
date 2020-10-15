@@ -56,6 +56,17 @@ namespace ZotapaySDK.Static
         }
 
         /// <summary>
+        /// Zotapay API constants
+        /// </summary>
+        public class API
+        {
+            /// <summary>
+            /// Code indicating successful api request
+            /// </summary>
+            public const string CODE_SUCCESS = "200";
+        }
+
+        /// <summary>
         /// SDK Version history
         /// </summary>
         public class Version
