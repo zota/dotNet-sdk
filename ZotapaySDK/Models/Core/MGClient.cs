@@ -5,16 +5,14 @@
     using System.Threading.Tasks;
     using System.ComponentModel.DataAnnotations;
     using System.Collections.Generic;
-    using static ZotapaySDK.Static.Constants;
     using Newtonsoft.Json;
     using System.Text;
-    using System.Net.Http.Headers;
-    using static ZotapaySDK.Models.UserAgent;
     using ZotapaySDK.Contracts;
+    using static ZotapaySDK.Static.Constants;
+    using static ZotapaySDK.Models.UserAgent;
 
     public class MGClient
     {
-        private string merchantId;
         private string merchantSecret;
         private string endpoint;
         private string requestUrl;
@@ -28,9 +26,8 @@
         /// <param name="endpointId">EndpointID as received from Zotapay</param>
         /// <param name="requestUrl">Base URL, either https://api.zotapay-sandbox.com or https://api.zotapay.com</param>
         /// <param name="httpClient">Http client will be set as static, default is new System.Net.Http.HttpClient</param>
-        public MGClient(string merchantId, string merchantSecret, string endpointId, string requestUrl, HttpClient httpClient = null)
+        public MGClient(string merchantSecret, string endpointId, string requestUrl, HttpClient httpClient = null)
         {
-            this.merchantId = merchantId;
             this.merchantSecret = merchantSecret;
             this.endpoint = endpointId;
             this.requestUrl = requestUrl;
@@ -43,10 +40,9 @@
         /// <param name="useConstantUrl">Indicate wether to grab the url from constants, default is false</param>
         /// <param name="environment">Environment to be used, if constant url is true, can be Sandbox or Live, default is Live</param>
         /// <param name="baseUrl">When useConstantUrl is set to false, base url must be passed here manually</param>
-        /// <param name="client">Http client will be set as static, default is System.Net.Http.HttpClient</param>
+        /// <param name="httpClient">Http client will be set as static, default is System.Net.Http.HttpClient</param>
         public MGClient(bool useConstantUrl = true, MGEnvironment environment = MGEnvironment.Live, string baseUrl = "", HttpClient httpClient = null)
         {
-            this.merchantId = Environment.GetEnvironmentVariable(ENV.MERCHANT_ID);
             this.merchantSecret = Environment.GetEnvironmentVariable(ENV.MERCHANT_SECRET_KEY);
             this.endpoint = Environment.GetEnvironmentVariable(ENV.ENDPOINT_ID);
             this.requestUrl = Environment.GetEnvironmentVariable(ENV.REQUEST_URL);
@@ -54,19 +50,29 @@
             if (useConstantUrl)
             {
                 this.requestUrl = (environment == MGEnvironment.Live) ? URL.LIVE : URL.SANDBOX;
-            } 
-
+            }
             MGClient.http = httpClient ?? new HttpClient();
         }
 
         /// <summary>
-        /// Requests to Zotapay API
+        /// Requests to Zotapay API. Accepts and returns request/result interfaces, which are exposed to the user
+        /// through concrete type wrappers for the different services: deposit, payout, status check, etc.
         /// </summary>
         /// <param name="request">Object containing data required for deposit, payout or order status check request</param>
         /// <returns>Task with the request results</returns>
         private async Task<IMGResult> Send(IMGRequest request)
         {
+            // Create the correct type of result
             IMGResult result = request.GetResultInstance();
+
+            // Validate MGClient
+            string MGClientErrorMessage = ValidateMGClient();
+            if (!string.IsNullOrEmpty(MGClientErrorMessage)) 
+            {
+                result.IsSuccess = false;
+                result.Message = MGClientErrorMessage;
+                return result;
+            }
 
             // Validate request
             List<ValidationResult> validationResults = new List<ValidationResult>();
@@ -91,17 +97,19 @@
 
                 // Request & parse response async
                 var response = await http.PostAsync(requestUrl, httpContent);
-                result = (IMGResult)JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result, Type.GetType(result.GetType()));
+                result = (IMGResult)
+                    JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result, 
+                    Type.GetType(result.ToString()));
                 result.IsSuccess = ((result.Code == API.CODE_SUCCESS) && (response.StatusCode == System.Net.HttpStatusCode.OK));
+                return result;
             } 
             catch (Exception e)
             {
                 // Indicate fail and reason
                 result.IsSuccess = false;
                 result.Message = e.Message;
+                return result;
             }
-
-            return result;
         }
 
         /// <summary>
@@ -115,9 +123,21 @@
             return (MGDepositResult)result;
         }
 
-        private string ValidateMGClient() // TODO
+        /// <summary>
+        /// Validates MGClient instance for missing properties
+        /// </summary>
+        /// <returns>null if valid or error message string</returns>
+        private string ValidateMGClient()
         {
-            return null;
+            string errorMessage = "";
+            errorMessage += string.IsNullOrWhiteSpace(this.endpoint) ? "endpoint " : "";
+            errorMessage += string.IsNullOrWhiteSpace(this.merchantSecret) ? "merchantSecret " : "";
+            errorMessage += string.IsNullOrWhiteSpace(this.requestUrl) ? "requestUrl " : "";
+            if (!string.IsNullOrWhiteSpace(errorMessage)) 
+            {
+                errorMessage = "MGClient missing parameters: " + errorMessage;
+            }
+            return errorMessage.Trim();
         }
     }
 }

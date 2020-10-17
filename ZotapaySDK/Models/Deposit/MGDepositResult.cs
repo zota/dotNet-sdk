@@ -1,8 +1,8 @@
-﻿using System.Runtime.Serialization;
-using ZotapaySDK.Contracts;
-
-namespace ZotapaySDK.Models
+﻿namespace ZotapaySDK.Models
 {
+    using System.Runtime.Serialization;
+    using ZotapaySDK.Contracts;
+
     /// <summary>
     /// Wrapper class with http and validation results
     /// </summary>
@@ -36,13 +36,5 @@ namespace ZotapaySDK.Models
         /// </summary>
         public bool IsSuccess { get; set; }
         IData IMGResult.Data { get { return Data; } set { }  }
-
-        string IMGResult.GetType()
-        {
-            // TODO
-            return "ZotapaySDK.Models.MGDepositResult";
-        }
-
-
     }
 }

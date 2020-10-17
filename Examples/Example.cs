@@ -6,7 +6,7 @@ using ZotapaySDK.Static;
 
 namespace Examples
 {
-    class Program
+    class Example
     {
         static void Main(string[] args)
         {
@@ -30,7 +30,6 @@ namespace Examples
             // Create Meta-Gate client
             MGClient client = new MGClient(useConstantUrl: true, environment: Constants.MGEnvironment.Sandbox);
             MGClient clientWithConfig = new MGClient(
-                merchantId: "MISTER-MERCHANT",
                 merchantSecret: "b9f9933d-364a-4653-b215-801b575ef164",
                 endpointId: "400009",
                 requestUrl: "https://kera.mereo.tech"
