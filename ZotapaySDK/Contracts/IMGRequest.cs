@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ZotapaySDK.Contracts
+﻿namespace ZotapaySDK.Contracts
 {
     public interface IMGRequest
     {

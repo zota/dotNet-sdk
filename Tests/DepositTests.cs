@@ -85,13 +85,6 @@ namespace Tests
         public void DepositCatchesUnexpectedResponse() 
         {
             // Arrange
-            MGDepositResult expectedResult = new MGDepositResult()
-            {
-                IsSuccess = false,
-                Code = "400",
-                Message = "endpoint currency mismatch",
-                Data = null,
-            };
             string responseMessage = "!@#$%^&*() -- not a valid json message, that will cause an exception -- !@#$%^&*()";
             var httpMock = Mocks.GetMockedHttp(HttpStatusCode.InternalServerError, responseMessage);
             MGClient client = new MGClient(httpClient: httpMock);
@@ -149,22 +142,38 @@ namespace Tests
         public void MGClientProperlyCreatedWithStringConstructor()
         {
             // Arrange
-            string merchantId = "merchant-id";
             string merchantSecret = "12345";
             string endpointId = "400009";
             string requestUrl = "https://google.com";
 
             // Act
-            MGClient client = new MGClient(merchantId, merchantSecret, endpointId, requestUrl);
+            MGClient client = new MGClient(merchantSecret, endpointId, requestUrl);
 
             // Assert
             Assert.IsNotNull(client);
+        }
+
+        [Test]
+        public void MGClientConstructorShouldFail()
+        {
+            // Arrange
+            MGClient client = new MGClient(useConstantUrl: false);
+            MGDepositRequest request = new MGDepositRequest();
+            string expectedErrorMessage = "MGClient missing parameters: requestUrl";
+
+            // Act
+            MGDepositResult actual = client.InitDeposit(request).Result;
+
+            // Assert
+            Assert.IsFalse(actual.IsSuccess);
+            Assert.AreEqual(expectedErrorMessage, actual.Message);
         }
 
         // TODO: rm
         [Test]
         public async Task DevToolTest()
         {
+            Assert.IsTrue(true);
             /*
             Int32 unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
 

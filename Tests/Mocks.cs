@@ -1,13 +1,12 @@
-﻿using Moq;
-using Moq.Protected;
-using System;
-namespace Tests
+﻿namespace Tests
 {
     using System.Net;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
     using ZotapaySDK.Models;
+    using Moq;
+    using Moq.Protected;
 
     /// <summary>
     /// Static class with pre-defined mock objects
