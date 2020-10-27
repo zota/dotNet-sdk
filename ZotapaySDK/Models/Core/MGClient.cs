@@ -8,15 +8,20 @@
     using Newtonsoft.Json;
     using System.Text;
     using ZotapaySDK.Contracts;
+    using ZotapaySDK.Models.Deposit;
     using static ZotapaySDK.Static.Constants;
     using static ZotapaySDK.Models.UserAgent;
-
+    
+    /// <summary>
+    /// Zotapay engine for all the integration methods
+    /// </summary>
     public class MGClient
     {
         private string merchantSecret;
         private string endpoint;
         private string requestUrl;
         private static HttpClient http;
+        private string rawResponse;
 
         /// <summary>
         /// Constructor for MGClient with string parameters
@@ -97,9 +102,11 @@
 
                 // Request & parse response async
                 var response = await http.PostAsync(requestUrl, httpContent);
-                result = (IMGResult)
-                    JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result, 
-                    Type.GetType(result.ToString()));
+                this.rawResponse = response.Content.ReadAsStringAsync().Result;
+                result = (IMGResult)JsonConvert.DeserializeObject(
+                        this.rawResponse, 
+                        Type.GetType(result.ToString())
+                    );
                 result.IsSuccess = ((result.Code == API.CODE_SUCCESS) && (response.StatusCode == System.Net.HttpStatusCode.OK));
                 return result;
             } 
@@ -107,7 +114,8 @@
             {
                 // Indicate fail and reason
                 result.IsSuccess = false;
-                result.Message = e.Message;
+                string respMsgFormat = "{0}: \nRaw Response: {1}";
+                result.Message = string.IsNullOrEmpty(this.rawResponse) ? e.Message : string.Format(respMsgFormat, e.Message, this.rawResponse);
                 return result;
             }
         }
@@ -121,6 +129,17 @@
         {
             var result = await Send(requestPayload);
             return (MGDepositResult)result;
+        }
+
+        /// <summary>
+        /// Make a deposit credit card request
+        /// </summary>
+        /// <param name="requestPayload">Deposit request payload</param>
+        /// <returns>Task<MGDepositResult> containing Zotapay API response</returns>
+        public async Task<DepositCardResponseData> InitCardDeposit(MGDepositCardRequest requestPayload)
+        {
+            var result = await Send(requestPayload);
+            return (DepositCardResponseData)result;
         }
 
         /// <summary>

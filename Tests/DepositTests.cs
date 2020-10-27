@@ -5,6 +5,7 @@ namespace Tests
     using System.Net;
     using System.Threading.Tasks;
     using ZotapaySDK.Models;
+    using ZotapaySDK.Models.Deposit;
     using ZotapaySDK.Static;
 
     public class Tests
@@ -89,13 +90,15 @@ namespace Tests
             var httpMock = Mocks.GetMockedHttp(HttpStatusCode.InternalServerError, responseMessage);
             MGClient client = new MGClient(httpClient: httpMock);
             var DepositRequest = Mocks.GetFullDepositRequest();
+            string expectedErrorMessage = "Unexpected character encountered while parsing value: !. Path '', line 0, position 0.: \n" +
+                "Raw Response: !@#$%^&*() -- not a valid json message, that will cause an exception -- !@#$%^&*()";
 
             // Act
             MGDepositResult actual = client.InitDeposit(DepositRequest).Result;
 
             // Assert
             Assert.IsFalse(actual.IsSuccess);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(actual.Message));
+            Assert.AreEqual(expectedErrorMessage, actual.Message);
         }
 
         [Test]
@@ -173,11 +176,9 @@ namespace Tests
         [Test]
         public async Task DevToolTest()
         {
-            Assert.IsTrue(true);
-            /*
             Int32 unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
 
-            var DepositOrderRequest = new MGDepositRequest
+            var DepositOrderRequest = new MGDepositCardRequest
             {
                 MerchantOrderID = unixTimestamp.ToString(),
                 OrderAmount = "100.00",
@@ -193,18 +194,39 @@ namespace Tests
                 CustomerPhone = "123",
                 CustomerIP = "127.0.0.1",
                 RedirectUrl = "httppppppppppppppppp",
-                CheckoutUrl = "htppppppppppppp11111111"
+                CheckoutUrl = "htppppppppppppp11111111",
+                CardCvv = "123",
+                CardExpirationMonth = "04",
+                CardExpirationYear = "22",
+                CardHolderName = "JOHN DOE",
+                CardNumber = "4242424242424242"
             }; // The OrderCurrency field is required. | The CustomerEmail field is not a valid e-mail address.
             MGClient clientWithConfig = new MGClient(
-                 merchantId: "MISTER-MERCHANT",
                  merchantSecret: "b9f9933d-364a-4653-b215-801b575ef164",
                  endpointId: "400009",
                  requestUrl: "https://kera.mereo.tech"
                  );
             var resp = await clientWithConfig.InitDeposit(DepositOrderRequest);
+
             // bad arguments: customerFirstName, customerLastName, customerAddress, customerCity, customerCountryCode, customerZipCode, customerPhone, customerIP, redirectUrl, checkoutUrl
             Assert.IsTrue(true);
-            */
+            
+        }
+
+        [Test]
+        public async Task CardDepositShouldShowFullErrorMessage()
+        {
+            // Arrange
+            var DepositOrderRequest = Mocks.GetFullDepositRequest();
+            MGClient clientWithConfig = new MGClient();
+            string expectedErrorMessage = "The CardExpirationYear field is required. | The CardCvv field is required. | The CardExpirationMonth field is required. | The CardHolderName field is required. | The CardNumber field is required.";
+
+            // Act
+            var actualResult = await clientWithConfig.InitDeposit(DepositOrderRequest);
+
+            // Assert
+            Assert.IsFalse(actualResult.IsSuccess);
+            Assert.AreEqual(expectedErrorMessage, actualResult.Message);
         }
     }
 }
