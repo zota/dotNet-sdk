@@ -132,7 +132,7 @@
         /// <returns>Task<MGDepositResult> containing Zotapay API response</returns>
         public async Task<MGDepositResult> InitDeposit(MGDepositRequest requestPayload)
         {
-            if (requestPayload.GetType() == typeof(MGDepositRequest)) 
+            if (requestPayload.GetType() != typeof(MGDepositRequest)) 
             {
                 return new MGDepositResult { 
                     IsSuccess = false, 
