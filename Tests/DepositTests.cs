@@ -148,9 +148,10 @@ namespace Tests
             string merchantSecret = "12345";
             string endpointId = "400009";
             string requestUrl = "https://google.com";
+            string merchantId = "merchant_id";
 
             // Act
-            MGClient client = new MGClient(merchantSecret, endpointId, requestUrl);
+            MGClient client = new MGClient(merchantSecret, endpointId, requestUrl, merchantId);
 
             // Assert
             Assert.IsNotNull(client);
@@ -204,6 +205,7 @@ namespace Tests
             MGClient clientWithConfig = new MGClient(
                  merchantSecret: "b9f9933d-364a-4653-b215-801b575ef164",
                  endpointId: "400009",
+                 merchantId: "sample_merchant_id",
                  requestUrl: "https://kera.mereo.tech"
                  );
             var resp = await clientWithConfig.InitDeposit(DepositOrderRequest);
@@ -217,12 +219,12 @@ namespace Tests
         public async Task CardDepositShouldShowFullErrorMessage()
         {
             // Arrange
-            var DepositOrderRequest = Mocks.GetFullDepositRequest();
+            MGDepositCardRequest DepositOrderRequest = Mocks.GetFullDepositCardRequest();
             MGClient clientWithConfig = new MGClient();
             string expectedErrorMessage = "The CardExpirationYear field is required. | The CardCvv field is required. | The CardExpirationMonth field is required. | The CardHolderName field is required. | The CardNumber field is required.";
 
             // Act
-            var actualResult = await clientWithConfig.InitDeposit(DepositOrderRequest);
+            var actualResult = await clientWithConfig.InitCardDeposit(DepositOrderRequest);
 
             // Assert
             Assert.IsFalse(actualResult.IsSuccess);

@@ -39,6 +39,8 @@ namespace ZotapaySDK.Static
         /// </summary>
         public class URL
         {
+            private const string BASE_URL = "/api/v1";
+
             /// <summary>
             /// Sandbox environment, used for integration and testing purposes. 
             /// </summary>
@@ -52,7 +54,12 @@ namespace ZotapaySDK.Static
             /// <summary>
             /// Deposit path with an endpoint id 
             /// </summary>
-            public const string PATH_DEPOSIT = "/api/v1/deposit/request/{0}/";
+            public const string PATH_DEPOSIT = BASE_URL + "/deposit/request/{0}/";
+
+            /// <summary>
+            /// Order status check path
+            /// </summary>
+            public const string PATH_STATUS_CHECK = BASE_URL + "/query/order-status/";
         }
 
         /// <summary>

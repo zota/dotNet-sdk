@@ -11,7 +11,8 @@
     using ZotapaySDK.Models.Deposit;
     using static ZotapaySDK.Static.Constants;
     using static ZotapaySDK.Models.UserAgent;
-    
+    using ZotapaySDK.Models.OrderStatusCheck;
+
     /// <summary>
     /// Zotapay engine for all the integration methods
     /// </summary>
@@ -22,6 +23,7 @@
         private string requestUrl;
         private static HttpClient http;
         private string rawResponse;
+        private string merchantId;
 
         /// <summary>
         /// Constructor for MGClient with string parameters
@@ -31,11 +33,12 @@
         /// <param name="endpointId">EndpointID as received from Zotapay</param>
         /// <param name="requestUrl">Base URL, either https://api.zotapay-sandbox.com or https://api.zotapay.com</param>
         /// <param name="httpClient">Http client will be set as static, default is new System.Net.Http.HttpClient</param>
-        public MGClient(string merchantSecret, string endpointId, string requestUrl, HttpClient httpClient = null)
+        public MGClient(string merchantSecret, string endpointId, string requestUrl, string merchantId, HttpClient httpClient = null)
         {
             this.merchantSecret = merchantSecret;
             this.endpoint = endpointId;
             this.requestUrl = requestUrl;
+            this.merchantId = merchantId;
             MGClient.http = httpClient ?? new HttpClient();
         }
 
@@ -50,6 +53,7 @@
         {
             this.merchantSecret = Environment.GetEnvironmentVariable(ENV.MERCHANT_SECRET_KEY);
             this.endpoint = Environment.GetEnvironmentVariable(ENV.ENDPOINT_ID);
+            this.merchantId = Environment.GetEnvironmentVariable(ENV.MERCHANT_ID);
             this.requestUrl = Environment.GetEnvironmentVariable(ENV.REQUEST_URL);
             this.requestUrl = baseUrl;
             if (useConstantUrl)
@@ -90,6 +94,7 @@
             }
 
             // Get request specific data
+            request.SetupPrivateMembers(this.merchantId);
             request.GenerateSignature(this.endpoint, this.merchantSecret);
             string requestUrl = request.GetRequestUrl(this.requestUrl, this.endpoint);
             
@@ -127,6 +132,13 @@
         /// <returns>Task<MGDepositResult> containing Zotapay API response</returns>
         public async Task<MGDepositResult> InitDeposit(MGDepositRequest requestPayload)
         {
+            if (requestPayload.GetType() == typeof(MGDepositRequest)) 
+            {
+                return new MGDepositResult { 
+                    IsSuccess = false, 
+                    Message = "Got MGDepositCardRequest instead of MGDepositRequest. Please use MGClient.InitCardDeposit for credit card integrations." 
+                };
+            }
             var result = await Send(requestPayload);
             return (MGDepositResult)result;
         }
@@ -134,12 +146,23 @@
         /// <summary>
         /// Make a deposit credit card request
         /// </summary>
-        /// <param name="requestPayload">Deposit request payload</param>
-        /// <returns>Task<MGDepositResult> containing Zotapay API response</returns>
-        public async Task<DepositCardResponseData> InitCardDeposit(MGDepositCardRequest requestPayload)
+        /// <param name="requestPayload">Deposit request payload with card data</param>
+        /// <returns>Task<DepositCardResponseData> containing Zotapay API response</returns>
+        public async Task<MGDepositCardResult> InitCardDeposit(MGDepositCardRequest requestPayload)
         {
             var result = await Send(requestPayload);
-            return (DepositCardResponseData)result;
+            return (MGDepositCardResult)result;
+        }
+
+        /// <summary>
+        /// Make an order status check request
+        /// </summary>
+        /// <param name="requestPayload">Status check request payload</param>
+        /// <returns>Task<MGQueryTxnResult> containing Zotapay API response</returns>
+        public async Task<MGQueryTxnResult> CheckOrderStatus(MGQueryTxnRequest requestPayload)
+        {
+            var result = await Send(requestPayload);
+            return (MGQueryTxnResult)result;
         }
 
         /// <summary>
@@ -152,6 +175,7 @@
             errorMessage += string.IsNullOrWhiteSpace(this.endpoint) ? "endpoint " : "";
             errorMessage += string.IsNullOrWhiteSpace(this.merchantSecret) ? "merchantSecret " : "";
             errorMessage += string.IsNullOrWhiteSpace(this.requestUrl) ? "requestUrl " : "";
+            errorMessage += string.IsNullOrWhiteSpace(this.merchantId) ? "merchantId " : "";
             if (!string.IsNullOrWhiteSpace(errorMessage)) 
             {
                 errorMessage = "MGClient missing parameters: " + errorMessage;

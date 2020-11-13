@@ -6,6 +6,8 @@
 
         public string GetRequestUrl(string baseUrl, string endpoint);
 
-        internal IMGResult GetResultInstance();
+        public IMGResult GetResultInstance();
+
+        internal virtual void SetupPrivateMembers(string merchantId) { }
     };
 }

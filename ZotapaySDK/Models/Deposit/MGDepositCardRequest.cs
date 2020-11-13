@@ -2,6 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
     using System.Runtime.Serialization;
+    using ZotapaySDK.Contracts;
 
     /// <summary>
     /// Card payment request with card data already collected
@@ -42,5 +43,10 @@
         [Required, StringLength(16, MinimumLength = 12)]
         [DataMember(Name = "cardNumber")]
         public string CardNumber { get; set; }
+
+        public override IMGResult GetResultInstance() 
+        {
+            return new MGDepositCardResult();
+        }
     }
 }

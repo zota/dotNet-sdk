@@ -7,6 +7,7 @@
     using ZotapaySDK.Models;
     using Moq;
     using Moq.Protected;
+    using ZotapaySDK.Models.Deposit;
 
     /// <summary>
     /// Static class with pre-defined mock objects
@@ -44,6 +45,32 @@
         public static MGDepositRequest GetFullDepositRequest()
         {
             return new MGDepositRequest
+            {
+                MerchantOrderID = "QvE8dZshpKhaOmHY",
+                OrderAmount = "100.00",
+                CustomerEmail = "customer@test.com",
+                OrderCurrency = "USD",
+                MerchantOrderDesc = "desc",
+                CustomerFirstName = "John",
+                CustomerLastName = "Doe",
+                CustomerAddress = "The Moon, hill 42",
+                CustomerCity = "Sofia",
+                CustomerCountryCode = "BG",
+                CustomerZipCode = "1303",
+                CustomerPhone = "123",
+                CustomerIP = "127.0.0.1",
+                RedirectUrl = "https://example-merchant.com/payment/return",
+                CheckoutUrl = "https://example-merchant.com/deposit"
+            };
+        }
+
+        /// <summary>
+        /// Full deposit credit card payload
+        /// </summary>
+        /// <returns>MGDepositRequest with everything set</returns>
+        public static MGDepositCardRequest GetFullDepositCardRequest()
+        {
+            return new MGDepositCardRequest
             {
                 MerchantOrderID = "QvE8dZshpKhaOmHY",
                 OrderAmount = "100.00",
