@@ -212,7 +212,7 @@
             return baseUrl + urlPath;
         }
 
-        IMGResult IMGRequest.GetResultInstance()
+        public virtual IMGResult GetResultInstance()
         {
             return new MGDepositResult();
         }

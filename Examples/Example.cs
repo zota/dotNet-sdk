@@ -32,6 +32,7 @@ namespace Examples
             MGClient clientWithConfig = new MGClient(
                 merchantSecret: "b9f9933d-364a-4653-b215-801b575ef164",
                 endpointId: "400009",
+                merchantId: "sample_merchant_id",
                 requestUrl: "https://kera.mereo.tech"
                 );
 
