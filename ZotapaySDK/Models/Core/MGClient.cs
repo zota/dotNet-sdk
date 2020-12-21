@@ -106,7 +106,14 @@
                 http.DefaultRequestHeaders.Add("User-Agent", GetUserAgentHeader());
 
                 // Request & parse response async
-                var response = await http.PostAsync(requestUrl, httpContent);
+                HttpResponseMessage response = new HttpResponseMessage();
+                if (request.GetMethod() == HttpMethod.Post) {
+                    response = await http.PostAsync(requestUrl, httpContent);
+                
+                } 
+                else if (request.GetMethod() == HttpMethod.Get) {
+                    response = await http.GetAsync(requestUrl);
+                }
                 this.rawResponse = response.Content.ReadAsStringAsync().Result;
                 result = (IMGResult)JsonConvert.DeserializeObject(
                         this.rawResponse, 
