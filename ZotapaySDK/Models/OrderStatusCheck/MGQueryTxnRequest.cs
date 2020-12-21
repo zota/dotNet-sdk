@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Net.Http;
     using System.Runtime.Serialization;
     using System.Security.Cryptography;
     using System.Text;
@@ -54,7 +55,7 @@
         /// <summary>
         /// Request checksum encrypted with SHA-256
         /// </summary>
-        [Required, StringLength(64, MinimumLength = 2)]
+        [StringLength(64, MinimumLength = 2)]
         [DataMember(Name = "signature")]
         public string Signature { get; set; }
 
@@ -91,6 +92,11 @@
         void IMGRequest.SetupPrivateMembers(string merchantId)
         {
             this.MerchantId = merchantId;
+        }
+
+        HttpMethod IMGRequest.GetMethod()
+        {
+            return HttpMethod.Get;
         }
     }
 }

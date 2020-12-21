@@ -3,6 +3,7 @@
     using Newtonsoft.Json;
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Net.Http;
     using System.Runtime.Serialization;
     using System.Security.Cryptography;
     using System.Text;
@@ -215,6 +216,11 @@
         public virtual IMGResult GetResultInstance()
         {
             return new MGDepositResult();
+        }
+
+        HttpMethod IMGRequest.GetMethod()
+        {
+            return HttpMethod.Post;
         }
     }
 }
