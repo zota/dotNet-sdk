@@ -8,6 +8,7 @@
     using System.Security.Cryptography;
     using System.Text;
     using ZotapaySDK.Contracts;
+    using ZotapaySDK.Static;
     using static ZotapaySDK.Static.Constants;
 
     /// <summary>
@@ -63,25 +64,14 @@
         {
             // string to sign
             string toSign = $"{this.MerchantId}{this.MerchantOrderID}{this.OrderID}{this.Timestamp}{secret}";
-
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                // Get the hash in a byte array
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(toSign));
-
-                // Convert to hex lowercase string 
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                this.Signature = builder.ToString().ToLower();
-            }
+            this.Signature = Hasher.ToSHA256(toSign);
         }
 
         public string GetRequestUrl(string baseUrl, string endpoint)
         {
-            return baseUrl + URL.PATH_STATUS_CHECK;
+            var domain = baseUrl + URL.PATH_STATUS_CHECK;
+            var queryParams = $"?merchantID={this.MerchantId}&orderID={this.OrderID}&merchantOrderID={this.MerchantOrderID}&timestamp={this.Timestamp}&signature={this.Signature}";
+            return domain + queryParams;
         }
 
         IMGResult IMGRequest.GetResultInstance()

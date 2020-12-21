@@ -1,13 +1,11 @@
 ﻿namespace ZotapaySDK.Models
 {
     using Newtonsoft.Json;
-    using System;
     using System.ComponentModel.DataAnnotations;
     using System.Net.Http;
     using System.Runtime.Serialization;
-    using System.Security.Cryptography;
-    using System.Text;
     using ZotapaySDK.Contracts;
+    using ZotapaySDK.Static;
     using static ZotapaySDK.Static.Constants;
 
     /// <summary>
@@ -41,7 +39,7 @@
         /// <summary>
         /// Amount to be charged, must be specified with delimiter, e.g. 1.50 for USD is 1 dollar and 50 cents
         /// </summary>
-        [Required, StringLength(12)]
+        [Required, StringLength(24)]
         [DataMember(Name = "orderAmount", IsRequired = true, EmitDefaultValue = false)]
         public string OrderAmount { get; set; }
 
@@ -185,20 +183,7 @@
         {
             // string to sign
             string toSign = $"{endpointId}{this.MerchantOrderID}{this.OrderAmount}{this.CustomerEmail}{secret}";
-
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                // Get the hash in a byte array
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(toSign));
-
-                // Convert to hex lowercase string 
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                this.Signature = builder.ToString().ToLower();
-            }
+            this.Signature = Hasher.ToSHA256(toSign);
         }
 
         /// <summary>

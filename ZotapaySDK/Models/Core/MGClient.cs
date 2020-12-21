@@ -12,6 +12,8 @@
     using static ZotapaySDK.Static.Constants;
     using static ZotapaySDK.Models.UserAgent;
     using ZotapaySDK.Models.OrderStatusCheck;
+    using ZotapaySDK.Callback;
+    using ZotapaySDK.Models.Payout;
 
     /// <summary>
     /// Zotapay engine for all the integration methods
@@ -173,6 +175,17 @@
         }
 
         /// <summary>
+        /// Make a payout order
+        /// </summary>
+        /// <param name="payoutRequestPayload">Payout request containing banking details</param>
+        /// <returns>Task<MGPayoutResult> containing Zotapay API response</returns>
+        public async Task<MGPayoutResult> InitPayout(MGPayoutRequest payoutRequestPayload)
+        {
+            var result = await Send(payoutRequestPayload);
+            return (MGPayoutResult)result;
+        }
+
+        /// <summary>
         /// Validates MGClient instance for missing properties
         /// </summary>
         /// <returns>null if valid or error message string</returns>
@@ -188,6 +201,23 @@
                 errorMessage = "MGClient missing parameters: " + errorMessage;
             }
             return errorMessage.Trim();
+        }
+
+        public MGCallback Parse(string s) {
+            try
+            {
+                var callback = JsonConvert.DeserializeObject<MGCallback>(s);
+                callback.validate(this.endpoint, this.merchantSecret);
+                return callback;
+            } 
+            catch (Exception e)
+            {
+                return new MGCallback {
+                    IsVerified = false,
+                    ErrorMessage = e.Message,
+                };
+            }
+
         }
     }
 }
