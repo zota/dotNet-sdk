@@ -16,7 +16,7 @@
         internal void validate(string endpoint, string secret)
         {
             string expected = Hasher.ToSHA256($"{endpoint}{this.OrderID}{this.merchantOrderID}{this.Status}{this.Amount}{this.CustomerEmail}{secret}");
-            IsVerified = (expected == this.Signature);
+            this.IsVerified = (expected == this.Signature);
         }
 
         /// <summary>
