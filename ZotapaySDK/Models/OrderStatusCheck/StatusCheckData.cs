@@ -78,6 +78,12 @@ namespace ZotapaySDK.Models.OrderStatusCheck
         /// A Json object with a copy of the original Order Status Request sent by merchant server to Zotapay.
         /// </summary>
         [DataMember(Name = "request", EmitDefaultValue = false)]
-        public string request { get; set; }
+        public object request { get; set; }
+
+        /// <summary>
+        /// Object with extra data regarding the order such as, payment method, dynamic currency conversion and others.
+        /// </summary>
+        [DataMember(Name = "extraData", EmitDefaultValue = false)]
+        public object extraData { get; set; }
     }
 }
