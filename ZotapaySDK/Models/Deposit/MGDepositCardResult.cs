@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Text;
-using ZotapaySDK.Contracts;
-
-namespace ZotapaySDK.Models.Deposit
+﻿namespace ZotapaySDK.Models.Deposit
 {
+    using System.Runtime.Serialization;
+    
     public class MGDepositCardResult : DepositResultBase
     {
         /// <summary>

@@ -14,6 +14,15 @@
     /// </summary>
     public static class Mocks
     {
+        public static MGClient GetMockedMGClient(HttpClient httpClient) {
+            return new MGClient(
+                merchantSecret: "merchant-secret",
+                merchantId: "merchant-id",
+                requestUrl: "https://example.com",
+                endpointId: "1234",
+                httpClient: httpClient);
+        }
+
         /// <summary>
         /// Mock of http client to have a predefined server response & status code
         /// </summary>

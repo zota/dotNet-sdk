@@ -1,14 +1,19 @@
 ﻿# ZotaPay DotNetSDK
 
-### Installation
-TODO: tweak the actual command
+## Nuget Dependencies
+- Newtonsoft.Json Version 12.0.3
+- System.ComponentModel.Annotations Version 4.7.0
+
+## Installation
+TODO: tweak the actual nuget package name once published
 ```sh
-nuget install zotapaysdk
+dotnet add package zotapaysdk
 ```
 
-### How to use
+## Usage
+Before you begin - contact ZotaPay to be provided with the necessary credentials.
 The main engine of ZotaPay is its MetaGate Client. It can be instantiated with environment variables or with the second explicit constructor.
-- For use with variables the following must be set in the environment (provided by ZotaPay):
+- For use with variables the following must be set in the environment:
 ```
 "ZOTAPAY_MERCHANT_ID"
 "ZOTAPAY_MERCHANT_SECRET_KEY"
@@ -16,10 +21,9 @@ The main engine of ZotaPay is its MetaGate Client. It can be instantiated with e
 "ZOTAPAY_REQUEST_URL"
 ```
 
-Example code:
+- Example code for creating client with environment variables set:
 ```C#
-// Environment variables are set in the only code for showcase purposes
-// For security common sense this method of setting is not to be used on live
+// Environment variables set in the code only for showcase purposes - do not use hardcoded credentials on live environment
 Environment.SetEnvironmentVariable(Constants.ENV.ENDPOINT_ID, "400009");
 Environment.SetEnvironmentVariable(Constants.ENV.MERCHANT_ID, "merchant-id");
 Environment.SetEnvironmentVariable(Constants.ENV.MERCHANT_SECRET_KEY, "merchant-secret-key");
@@ -28,8 +32,9 @@ Environment.SetEnvironmentVariable(Constants.ENV.MERCHANT_SECRET_KEY, "merchant-
 MGClient client = new MGClient(useConstantUrl: true, environment: Constants.MGEnvironment.Sandbox);
 ```
 
-- For convenience there is an explicit contructor used as such:
+- For cases where credentials are fetched from a secret store or other means, there is an explicit contructor used as such:
 ```C#
+// Credentials are hardcoded for showcase purposes - do not use hardcoded credentials on live environment
 MGClient clientWithConfig = new MGClient(merchantSecret: "merchant-secret-key",
                                     endpointId: "400009",
                                     merchantId: "merchant-id",
@@ -40,7 +45,7 @@ MGClient clientWithConfig = new MGClient(merchantSecret: "merchant-secret-key",
 Example Code:
 ```C#    
 // Assemble deposit order data
-var DepositOrderRequest = new MGDepositRequest
+MGDepositRequest DepositOrderRequest = new MGDepositRequest
 {
     MerchantOrderID = "QvE8dZshpKhaOmHY1",
     OrderAmount = "100.00",
@@ -80,7 +85,7 @@ string paymentUrl = resp.Data.DepositUrl;
 
 ```C#
 // Initialize query status payload & send request
-var queryStatusCheckRequest = new MGQueryTxnRequest { MerchantOrderID = "QvE8dZshpKhaOmHY1", OrderID = "32453550" };
+MGQueryTxnRequest queryStatusCheckRequest = new MGQueryTxnRequest { MerchantOrderID = "QvE8dZshpKhaOmHY1", OrderID = "32453550" };
 MGQueryTxnResult orderResponse = await client.CheckOrderStatus(queryStatusCheckRequest);
 
 if (!orderResponse.IsSuccess) {
@@ -96,7 +101,7 @@ string status = orderResponse.Data.status;
 ### Payout Order Request
 ```C#
 // Assemble payout order data
-var payoutRequest = new MGPayoutRequest
+MGPayoutRequest payoutRequest = new MGPayoutRequest
 {
     MerchantOrderID = "Q44mHY18",
     CustomerBankCode = "BBL",
@@ -129,6 +134,18 @@ if (!resp.IsSuccess)
 {
     // handle unsuccessful request
     string reasonForFailure = resp.Message;
+    // ...
+}
+```
+
+### Parse ZotaPay Callback Notification
+```C#
+// your http server code that listens for callback ...
+MGCallback callback = client.Parse(callbackJsonString);
+
+// handle errors or unverified signatures
+if (!callback.IsVerified) {
+    string reason = callback.ErrorMessage;
     // ...
 }
 ```

@@ -203,10 +203,15 @@
             return errorMessage.Trim();
         }
 
-        public MGCallback Parse(string s) {
+        /// <summary>
+        /// Parses the given callback and verifies its signature
+        /// </summary>
+        /// <param name="rawJsonCallbackString"></param>
+        /// <returns>MGCallback object containing the callback data</returns>
+        public MGCallback Parse(string rawJsonCallbackString) {
             try
             {
-                var callback = JsonConvert.DeserializeObject<MGCallback>(s);
+                var callback = JsonConvert.DeserializeObject<MGCallback>(rawJsonCallbackString);
                 callback.validate(this.endpoint, this.merchantSecret);
                 return callback;
             } 

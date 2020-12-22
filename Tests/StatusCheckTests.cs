@@ -1,36 +1,45 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using ZotapaySDK.Models;
-using ZotapaySDK.Models.Deposit;
-using ZotapaySDK.Models.OrderStatusCheck;
-
-namespace Tests
+﻿namespace Tests
 {
-    using ZotapaySDK.Static;
+    using NUnit.Framework;
+    using System.Net;
+    using ZotapaySDK.Models.OrderStatusCheck;
 
     class StatusCheckTests
     {
-        [SetUp]
-        public void Setup()
+        [Test]
+        public void QueryRequestShouldHandleError()
         {
-            Environment.SetEnvironmentVariable(Constants.ENV.ENDPOINT_ID, "400009");
-            Environment.SetEnvironmentVariable(Constants.ENV.MERCHANT_ID, "MISTER-MERCHANT");
-            Environment.SetEnvironmentVariable(Constants.ENV.MERCHANT_SECRET_KEY, "b9f9933d-364a-4653-b215-801b575ef164"); // TODO: swap this before going live
+            // Arrange
+            var queryRequest = new MGQueryTxnRequest{};
+            var client = Mocks.GetMockedMGClient(null);
+            var expectedMessage = "The OrderID field is required. | The MerchantOrderID field is required.";
+            
+            // Act 
+            MGQueryTxnResult actual = client.CheckOrderStatus(queryRequest).Result;
+
+            // Assert
+            Assert.IsFalse(actual.IsSuccess);
+            Assert.AreEqual(expectedMessage, actual.Message);
         }
 
         [Test]
-        public async Task DevToolTest()
+        public void QueryRequestSuccess()
         {
-            
-            var DepositOrderRequest = new MGQueryTxnRequest
-            {
-            }; 
+            // Arrange
+            var queryRequest = new MGQueryTxnRequest {
+                OrderID = "1234567",
+                MerchantOrderID = "merch-order-id",
+            };
+            string messageSuccess = "{\"code\":\"200\",\"data\":{\"type\":\"SALE\",\"status\":\"APPROVED\",\"errorMessage\":\"\",\"endpointID\":\"1050\",\"processorTransactionID\":\"\",\"orderID\":\"8b3a6b89697e8ac8f45d964bcc90c7ba41764acd\",\"merchantOrderID\":\"QvE8dZshpKhaOmHY\",\"amount\":\"500.00\",\"currency\":\"THB\",\"customerEmail\":\"customer@email-address.com\",\"customParam\":\"{\\\"UserId\\\":\\\"e139b447\\\"}\",\"extraData\":\"\",\"request\":{\"merchantID\":\"EXAMPLE-MERCHANT-ID\",\"orderID\":\"8b3a6b89697e8ac8f45d964bcc90c7ba41764acd\",\"merchantOrderID\":\"QvE8dZshpKhaOmHY\",\"timestamp\":\"1564617600\"}}}";
+            var httpMock = Mocks.GetMockedHttp(HttpStatusCode.OK, messageSuccess);
+            var client = Mocks.GetMockedMGClient(httpClient: httpMock);
 
-            Assert.IsTrue(true);
+            // Act
+            var actual = client.CheckOrderStatus(queryRequest).Result;
 
+            // Assert
+            Assert.IsTrue(actual.IsSuccess);
+            Assert.AreEqual("APPROVED", actual.Data.status);
         }
     }
 }
