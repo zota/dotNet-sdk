@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Text;
-using ZotapaySDK.Contracts;
-
-namespace ZotapaySDK.Models.Payout
+﻿namespace ZotapaySDK.Models.Payout
 {
+    using System.Runtime.Serialization;
+    using ZotapaySDK.Contracts;
+
     public class MGPayoutResult : IMGResult
     {
         /// <summary>

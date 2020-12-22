@@ -1,23 +1,13 @@
 namespace Tests
 {
     using NUnit.Framework;
-    using System;
     using System.Net;
     using System.Threading.Tasks;
     using ZotapaySDK.Models;
     using ZotapaySDK.Models.Deposit;
-    using ZotapaySDK.Static;
 
     public class Tests
     {
-        [SetUp]
-        public void Setup()
-        {
-            Environment.SetEnvironmentVariable(Constants.ENV.ENDPOINT_ID, "400009");
-            Environment.SetEnvironmentVariable(Constants.ENV.MERCHANT_ID, "MISTER-MERCHANT");
-            Environment.SetEnvironmentVariable(Constants.ENV.MERCHANT_SECRET_KEY, "b9f9933d-364a-4653-b215-801b575ef164"); // TODO: swap this before going live
-        }
-
         [Test]
         public void DepositSuccess()
         {
@@ -36,7 +26,7 @@ namespace Tests
             };
             string messageSuccess = "{ \"code\": \"200\", \"data\": { \"depositUrl\": \"https://api.zotapay.com/api/v1/deposit/init/8b3a6b89697e8ac8f45d964bcc90c7ba41764acd/\", \"merchantOrderID\": \"QvE8dZshpKhaOmHY\", \"orderID\": \"8b3a6b89697e8ac8f45d964bcc90c7ba41764acd\" } }";
             var httpMock = Mocks.GetMockedHttp(HttpStatusCode.OK, messageSuccess);
-            MGClient client = new MGClient(httpClient: httpMock);
+            MGClient client = Mocks.GetMockedMGClient(httpClient: httpMock);
             var DepositRequest = new MGDepositRequest
             {
                 MerchantOrderID = "QvE8dZshpKhaOmHY",OrderAmount = "100.00",CustomerEmail = "customer@test.com",OrderCurrency = "USD",MerchantOrderDesc = "desc",CustomerFirstName = "John",
@@ -69,7 +59,7 @@ namespace Tests
             };
             string responseMessage = "{ \"code\": \"400\", \"message\": \"endpoint currency mismatch\" } ";
             var httpMock = Mocks.GetMockedHttp(HttpStatusCode.BadRequest, responseMessage);
-            MGClient client = new MGClient(httpClient: httpMock);
+            MGClient client = Mocks.GetMockedMGClient(httpClient: httpMock);
             var DepositRequest = Mocks.GetFullDepositRequest();
 
             // Act
@@ -88,7 +78,7 @@ namespace Tests
             // Arrange
             string responseMessage = "!@#$%^&*() -- not a valid json message, that will cause an exception -- !@#$%^&*()";
             var httpMock = Mocks.GetMockedHttp(HttpStatusCode.InternalServerError, responseMessage);
-            MGClient client = new MGClient(httpClient: httpMock);
+            MGClient client = Mocks.GetMockedMGClient(httpClient: httpMock);
             var DepositRequest = Mocks.GetFullDepositRequest();
             string expectedErrorMessage = "Unexpected character encountered while parsing value: !. Path '', line 0, position 0.: \n" +
                 "Raw Response: !@#$%^&*() -- not a valid json message, that will cause an exception -- !@#$%^&*()";
@@ -105,7 +95,7 @@ namespace Tests
         public void EmptyRequestShowsFullErrorMessage()
         {
             // Arrange
-            MGClient clientMock = new MGClient();
+            MGClient clientMock = Mocks.GetMockedMGClient(null);
             MGDepositRequest depositRequest = new MGDepositRequest();
             string expectedErrorMessage = "The MerchantOrderID field is required. | The MerchantOrderDesc field is required. |" +
                 " The OrderAmount field is required. | The OrderCurrency field is required. | The CustomerFirstName field is required. |" +
@@ -163,7 +153,7 @@ namespace Tests
             // Arrange
             MGClient client = new MGClient(useConstantUrl: false);
             MGDepositRequest request = new MGDepositRequest();
-            string expectedErrorMessage = "MGClient missing parameters: requestUrl";
+            string expectedErrorMessage = "MGClient missing parameters: endpoint merchantSecret requestUrl merchantId";
 
             // Act
             MGDepositResult actual = client.InitDeposit(request).Result;
@@ -173,54 +163,12 @@ namespace Tests
             Assert.AreEqual(expectedErrorMessage, actual.Message);
         }
 
-        // TODO: rm
-        [Test]
-        public async Task DevToolTest()
-        {
-            Int32 unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-
-            var DepositOrderRequest = new MGDepositCardRequest
-            {
-                MerchantOrderID = unixTimestamp.ToString(),
-                OrderAmount = "100.00",
-                CustomerEmail = "customer@test.com",
-                OrderCurrency = "USD",
-                MerchantOrderDesc = "desc",
-                CustomerFirstName = "John",
-                CustomerLastName = "Doe",
-                CustomerAddress = "The Moon, hill 42",
-                CustomerCity = "Sofia",
-                CustomerCountryCode = "BG",
-                CustomerZipCode = "1303",
-                CustomerPhone = "123",
-                CustomerIP = "127.0.0.1",
-                RedirectUrl = "httppppppppppppppppp",
-                CheckoutUrl = "htppppppppppppp11111111",
-                CardCvv = "123",
-                CardExpirationMonth = "04",
-                CardExpirationYear = "22",
-                CardHolderName = "JOHN DOE",
-                CardNumber = "4242424242424242"
-            }; // The OrderCurrency field is required. | The CustomerEmail field is not a valid e-mail address.
-            MGClient clientWithConfig = new MGClient(
-                 merchantSecret: "b9f9933d-364a-4653-b215-801b575ef164",
-                 endpointId: "400009",
-                 merchantId: "sample_merchant_id",
-                 requestUrl: "https://kera.mereo.tech"
-                 );
-            var resp = await clientWithConfig.InitDeposit(DepositOrderRequest);
-
-            // bad arguments: customerFirstName, customerLastName, customerAddress, customerCity, customerCountryCode, customerZipCode, customerPhone, customerIP, redirectUrl, checkoutUrl
-            Assert.IsTrue(true);
-            
-        }
-
         [Test]
         public async Task CardDepositShouldShowFullErrorMessage()
         {
             // Arrange
             MGDepositCardRequest DepositOrderRequest = Mocks.GetFullDepositCardRequest();
-            MGClient clientWithConfig = new MGClient();
+            MGClient clientWithConfig = Mocks.GetMockedMGClient(null);
             string expectedErrorMessage = "The CardExpirationYear field is required. | The CardCvv field is required. | The CardExpirationMonth field is required. | The CardHolderName field is required. | The CardNumber field is required.";
 
             // Act

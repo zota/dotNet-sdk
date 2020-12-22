@@ -1,80 +1,76 @@
-﻿using System;
-using System.Threading;
-using ZotapaySDK.Contracts;
-using ZotapaySDK.Models;
-using ZotapaySDK.Static;
-using ZotapaySDK.Models.OrderStatusCheck;
-using ZotapaySDK.Models.Payout;
-
-namespace Examples
+﻿namespace Examples
 {
+    using System;
+    using ZotapaySDK.Models;
+    using ZotapaySDK.Static;
+    using ZotapaySDK.Models.OrderStatusCheck;
+    using ZotapaySDK.Models.Payout;
+    using ZotapaySDK.Callback;
+
     class Example
     {
         static void Main(string[] args)
         {
-            // "ZOTAPAY_MERCHANT_ID" 
-            // "ZOTAPAY_MERCHANT_SECRET_KEY" 
-            // "ZOTAPAY_ENDPOINT_ID" 
-            // "ZOTAPAY_REQUEST_URL";
+            // MGClient client = CreateClientWithEnvVarExample();
+            MGClient client = CreateClientWithExplicitConfig();
 
-            // Environment variables are set in the only code for showcase purposes
+            DepositExample(client);
+            QueryOrderExample(client);
+            PayoutExample(client);
+            ParseCallbackExample(client);
+        }
+
+        public static MGClient CreateClientWithExplicitConfig()
+        {
+            // Credentials are hardcoded for showcase purposes - do not use hardcoded credentials on live environment
+            MGClient clientWithConfig = new MGClient(
+                merchantSecret: "merchant-secret-key",
+                endpointId: "400007",
+                merchantId: "merchant-id",
+                requestUrl: "https://secure.zotapay-stage.com"
+                );
+            return clientWithConfig;
+        }
+
+        public static MGClient CreateClientWithEnvVarExample()
+        {
+            /*
+                The following are to be set as environment variables:
+                "ZOTAPAY_MERCHANT_ID" 
+                "ZOTAPAY_MERCHANT_SECRET_KEY" 
+                "ZOTAPAY_ENDPOINT_ID" 
+                "ZOTAPAY_REQUEST_URL"; 
+            */
+
+            // Environment variables set in the code only for showcase purposes - do not use hardcoded credentials on live environment
             Environment.SetEnvironmentVariable(Constants.ENV.ENDPOINT_ID, "400009");
             Environment.SetEnvironmentVariable(Constants.ENV.MERCHANT_ID, "merchant-id");
             Environment.SetEnvironmentVariable(Constants.ENV.MERCHANT_SECRET_KEY, "merchant-secret-key");
 
             // ZotaPay's Meta Gate client constructed with environment variables
-            MGClient client = new MGClient(useConstantUrl: true, environment: Constants.MGEnvironment.Sandbox);
+            MGClient client = new MGClient(useConstantUrl: true, environment: Constants.MGEnvironment.Sandbox); // Constants.MGEnvironment.Live
+            return client;
+        }
 
-            // Assemble deposit order data
-            var DepositOrderRequest = new MGDepositRequest
+        public static void ParseCallbackExample(MGClient client) {
+            string exampleRawJson = "{\"type\":\"SALE\",\"status\":\"APPROVED\",\"errorMessage\":\"\",\"endpointID\":\"400009\",\"processorTransactionID\":\"279198e3-7277-4e28-a490-e02deec1a3cc\",\"orderID\":\"32453550\",\"merchantOrderID\":\"QvE8dZshpKhaOmHY1\",\"amount\":\"100.00\",\"currency\":\"USD\",\"customerEmail\":\"customer@test.com\",\"customParam\":\"\",\"extraData\":{\"dcc\":false,\"paymentMethod\":\"ONLINE\"},\"originalRequest\":{\"merchantOrderID\":\"QvE8dZshpKhaOmHY1\",\"merchantOrderDesc\":\"desc\",\"orderAmount\":\"100.00\",\"orderCurrency\":\"USD\",\"customerEmail\":\"customer@test.com\",\"customerFirstName\":\"John\",\"customerLastName\":\"Doe\",\"customerAddress\":\"The Moon, hill 42\",\"customerCountryCode\":\"BG\",\"customerCity\":\"Sofia\",\"customerZipCode\":\"1303\",\"customerPhone\":\"123\",\"customerIP\":\"127.0.0.1\",\"redirectUrl\":\"https://example-merchant.com/payment/return\",\"callbackUrl\":\"https://ens39ypv7jld8.x.pipedream.net\",\"checkoutUrl\":\"https://example-merchant.com/deposit\",\"signature\":\"0ca81b0354fd669b602b683ca11859635a1831d438ef276289ab653a310c8f76\",\"requestedAt\":\"0001-01-01T00:00:00Z\"},\"signature\":\"7df9a67035e2c2f145c51653bd25aa56658954dac114ce8f77ddc4f991ecab1a\"}";
+            MGCallback callback = client.Parse(exampleRawJson);
+
+            // handle errors or unverified signatures
+            if (!callback.IsVerified)
             {
-                MerchantOrderID = "QvE8dZshpKhaOmHY1",
-                OrderAmount = "100.00",
-                CustomerEmail = "customer@test.com",
-                OrderCurrency = "USD",
-                MerchantOrderDesc = "desc",
-                CustomerFirstName = "John",
-                CustomerLastName = "Doe",
-                CustomerAddress = "The Moon, hill 42",
-                CustomerCity = "Sofia",
-                CustomerCountryCode = "BG",
-                CustomerZipCode = "1303",
-                CustomerPhone = "123",
-                CustomerIP = "127.0.0.1",
-                RedirectUrl = "https://example-merchant.com/payment/return",
-                CheckoutUrl = "https://example-merchant.com/deposit",
-                CallbackUrl = "https://example-merchant.com/payment/callback",
-            };
-
-            // Initiate deposit order request
-            MGDepositResult resp = client.InitDeposit(DepositOrderRequest).Result;
-
-            // Check the request status
-            if (!resp.IsSuccess) 
-            {
-                // handle unsuccessful request
-                string reasonForFailure = resp.Message;
+                string reason = callback.ErrorMessage;
                 // ...
+                return;
             }
 
-            // Redirect the end user to the payment url
-            string paymentUrl = resp.Data.DepositUrl;
+            string orderStatus = callback.Status;
+            Console.WriteLine(orderStatus);
+        }
 
-            // Initialize query status payload & send request
-            var queryStatusCheckRequest = new MGQueryTxnRequest { MerchantOrderID = "QvE8dZshpKhaOmHY1", OrderID = "32453550" };
-            MGQueryTxnResult orderResponse = client.CheckOrderStatus(queryStatusCheckRequest).Result;
-
-            if (!orderResponse.IsSuccess) {
-                // Check reason and handle failure
-                string reason = orderResponse.Message;
-                // ...
-            }
-
-            // Order status
-            string status = orderResponse.Data.status;
-
+        public static void PayoutExample(MGClient client) {
             // Assemble payout order data
-            var payoutRequest = new MGPayoutRequest
+            MGPayoutRequest payoutRequest = new MGPayoutRequest
             {
                 MerchantOrderID = "Q44mHY18",
                 CustomerBankCode = "BBL",
@@ -99,41 +95,78 @@ namespace Examples
                 CallbackUrl = "https://ens39ypv7jld8.x.pipedream.net",
             };
 
-            // Create Meta-Gate client
-            
-            MGClient clientWithConfig = new MGClient(
-                merchantSecret: "b9f9933d-364a-4653-b215-801b575ef164",
-                endpointId: "400007",
-                merchantId: "MISTER-MERCHANT",
-                requestUrl: "https://secure.zotapay-stage.com"
-                );
+            // Initiate deposit order request
+            MGPayoutResult resp = client.InitPayout(payoutRequest).Result;
 
-            // MGPayoutResult resp = clientWithConfig.InitPayout(payoutRequest).Result;
-            // MGQueryTxnResult resp = clientWithConfig.CheckOrderStatus(QueryStatusCheckRequest).Result;
-            // MGDepositResult resp = clientWithConfig.InitDeposit(DepositOrderRequest).Result;
-            // MGDepositResult t =  isSuccess depositUrl 
-
-            // resp.ApiResponse.DepositData 		
-            // OrderID	"6948"	string
-            // MerchantOrderID	"QvE8dZshpKhaOmHY1"	string /\/\ \\\\
-            // DepositUrl	"https://kera.mereo.tech/api/v1/deposit/init/6948/0ca81b0354fd669b602b683ca11859635a1831d438ef276289ab653a310c8f76/"	string
-            // 
-            /*string rawCallback = "{\"type\":\"SALE\",\"status\":\"APPROVED\",\"errorMessage\":\"\",\"endpointID\":\"400009\",\"processorTransactionID\":\"279198e3-7277-4e28-a490-e02deec1a3cc\",\"orderID\":\"32453550\",\"merchantOrderID\":\"QvE8dZshpKhaOmHY1\",\"amount\":\"100.00\",\"currency\":\"USD\",\"customerEmail\":\"customer@test.com\",\"customParam\":\"\",\"extraData\":{\"dcc\":false,\"paymentMethod\":\"ONLINE\"},\"originalRequest\":{\"merchantOrderID\":\"QvE8dZshpKhaOmHY1\",\"merchantOrderDesc\":\"desc\",\"orderAmount\":\"100.00\",\"orderCurrency\":\"USD\",\"customerEmail\":\"customer@test.com\",\"customerFirstName\":\"John\",\"customerLastName\":\"Doe\",\"customerAddress\":\"The Moon, hill 42\",\"customerCountryCode\":\"BG\",\"customerCity\":\"Sofia\",\"customerZipCode\":\"1303\",\"customerPhone\":\"123\",\"customerIP\":\"127.0.0.1\",\"redirectUrl\":\"https://example-merchant.com/payment/return\",\"callbackUrl\":\"https://ens39ypv7jld8.x.pipedream.net\",\"checkoutUrl\":\"https://example-merchant.com/deposit\",\"signature\":\"0ca81b0354fd669b602b683ca11859635a1831d438ef276289ab653a310c8f76\",\"requestedAt\":\"0001-01-01T00:00:00Z\"},\"signature\":\"56e733fc383656e383e3d0f3c815399eb306388efd60c81f1c31def7f6806137\"}";         
-            var callback = clientWithConfig.Parse(rawCallback);
-            if (!callback.IsVerified)
+            // Check the request status
+            if (!resp.IsSuccess)
             {
-                Console.WriteLine(callback.ErrorMessage);
+                // handle unsuccessful request
+                string reasonForFailure = resp.Message;
+                // ...
                 return;
             }
 
-            if (callback.Status == "APPROVED")
+            // Capture ZotaPay order id
+            string zotapayOrderId = resp.Data.orderID;
+            Console.WriteLine(zotapayOrderId);
+        }
+
+        public static void QueryOrderExample(MGClient client) {
+            // Initialize query status payload & send request
+            var queryStatusCheckRequest = new MGQueryTxnRequest { MerchantOrderID = "QvE8dZshpKhaOmHY1", OrderID = "32453550" };
+            MGQueryTxnResult orderResponse = client.CheckOrderStatus(queryStatusCheckRequest).Result;
+
+            if (!orderResponse.IsSuccess)
             {
+                // Check reason and handle failure
+                string reason = orderResponse.Message;
+                // ...
+                return;
+            }
 
-            }*/
+            // Order status
+            string status = orderResponse.Data.status;
+            Console.WriteLine(status);
+        }
 
-            Thread.Sleep(5000);
-            Console.WriteLine(resp);
-            Console.ReadLine();
+        public static void DepositExample(MGClient client) {
+            // Assemble deposit order data
+            MGDepositRequest DepositOrderRequest = new MGDepositRequest
+            {
+                MerchantOrderID = "QvE8dZshpKhaOmHY1",
+                OrderAmount = "100.00",
+                CustomerEmail = "customer@test.com",
+                OrderCurrency = "USD",
+                MerchantOrderDesc = "desc",
+                CustomerFirstName = "John",
+                CustomerLastName = "Doe",
+                CustomerAddress = "The Moon, hill 42",
+                CustomerCity = "Sofia",
+                CustomerCountryCode = "BG",
+                CustomerZipCode = "1303",
+                CustomerPhone = "123",
+                CustomerIP = "127.0.0.1",
+                RedirectUrl = "https://example-merchant.com/payment/return",
+                CheckoutUrl = "https://example-merchant.com/deposit",
+                CallbackUrl = "https://example-merchant.com/payment/callback",
+            };
+
+            // Initiate deposit order request
+            MGDepositResult resp = client.InitDeposit(DepositOrderRequest).Result;
+
+            // Check the request status
+            if (!resp.IsSuccess)
+            {
+                // handle unsuccessful request
+                string reasonForFailure = resp.Message;
+                // ...
+                return;
+            }
+
+            // Redirect the end user to the payment url
+            string paymentUrl = resp.Data.DepositUrl;
+            Console.WriteLine(paymentUrl);
         }
     }
 }
