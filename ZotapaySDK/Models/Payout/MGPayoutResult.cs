@@ -1,18 +1,10 @@
-﻿namespace ZotapaySDK.Models
+﻿namespace ZotapaySDK.Models.Payout
 {
     using System.Runtime.Serialization;
     using ZotapaySDK.Contracts;
 
-    /// <summary>
-    /// Wrapper class with http and validation results
-    /// </summary>
-    public class MGDepositResult : IMGResult
+    public class MGPayoutResult : IMGResult
     {
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public MGDepositResult() { }
-
         /// <summary>
         /// A status code representing the acceptance of the request by Zotapay server.
         /// </summary>
@@ -25,16 +17,17 @@
         [DataMember(Name = "message", EmitDefaultValue = false)]
         public string Message { get; set; }
 
+        IData IMGResult.Data { get { return Data; } set { } }
+
         /// <summary>
-        /// When code is 200, this parameter will include the following fields: depositUrl, merchantOrderID and orderID.
+        /// When code is 200, this parameter will include the response data. Please see the class summary for a full list of parameters.
         /// </summary>
         [DataMember(Name = "data", EmitDefaultValue = false)]
-        public DepositResponseData Data { get; set; }
+        public MGPayoutData Data { get; set; }
 
         /// <summary>
         /// Indicates wether the request object was valid and an actual http request was send
         /// </summary>
         public bool IsSuccess { get; set; }
-        IData IMGResult.Data { get { return Data; } set { }  }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ZotapaySDK.Contracts
+﻿namespace ZotapaySDK.Contracts
 {
     public interface IMGResult
     {
@@ -10,7 +6,6 @@ namespace ZotapaySDK.Contracts
         public string Message { get; set; }
         public IData Data { get; set; }
         public bool IsSuccess { get; set; }
-        public string GetType();
     }
 
     public interface IData { }

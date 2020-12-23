@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ZotapaySDK.Contracts
+﻿namespace ZotapaySDK.Contracts
 {
     public interface IMGRequest
     {
@@ -10,6 +6,10 @@ namespace ZotapaySDK.Contracts
 
         public string GetRequestUrl(string baseUrl, string endpoint);
 
-        internal IMGResult GetResultInstance();
+        public IMGResult GetResultInstance();
+
+        internal virtual void SetupPrivateMembers(string merchantId) { }
+
+        internal System.Net.Http.HttpMethod GetMethod();
     };
 }

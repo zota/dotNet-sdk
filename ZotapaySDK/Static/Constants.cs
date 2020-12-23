@@ -1,17 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Net;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace ZotapaySDK.Static
 {
     /// <summary>
     /// Zotapay constants class
     /// </summary>
-    public class Constants
+    public static class Constants
     {
         /// <summary>
         /// Environment variables keys constants
         /// </summary>
-        public class ENV
+        public static class ENV
         {
             /// <summary>
             /// MerchantID as received from Zotapay
@@ -37,8 +39,10 @@ namespace ZotapaySDK.Static
         /// <summary>
         /// URLs and path constatns
         /// </summary>
-        public class URL
+        public static class URL
         {
+            private const string BASE_URL = "/api/v1";
+
             /// <summary>
             /// Sandbox environment, used for integration and testing purposes. 
             /// </summary>
@@ -52,13 +56,24 @@ namespace ZotapaySDK.Static
             /// <summary>
             /// Deposit path with an endpoint id 
             /// </summary>
-            public const string PATH_DEPOSIT = "/api/v1/deposit/request/{0}/";
+            public const string PATH_DEPOSIT = BASE_URL + "/deposit/request/{0}/";
+
+            /// <summary>
+            /// Order status check path
+            /// </summary>
+            public const string PATH_STATUS_CHECK = BASE_URL + "/query/order-status/";
+
+            /// <summary>
+            /// Order status check path
+            /// </summary>
+            public const string PATH_PAYOUT = BASE_URL + "/payout/request/{0}/";
+
         }
 
         /// <summary>
         /// Zotapay API constants
         /// </summary>
-        public class API
+        public static class API
         {
             /// <summary>
             /// Code indicating successful api request
@@ -69,7 +84,7 @@ namespace ZotapaySDK.Static
         /// <summary>
         /// SDK Version history
         /// </summary>
-        public class Version
+        public static class Version
         {
             /// <summary>
             /// Current SDK version
