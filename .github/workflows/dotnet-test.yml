@@ -1,6 +1,5 @@
 name: .NET Core Build
 
-
 # More inspiration here:
 # https://github.com/nogic1008/dotnet-ci-example/blob/master/.github/workflows/dotnetcore.yml
 on:
@@ -29,49 +28,24 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-nuget-
 
-      # restore dependencies  
-    - name: Install dependencies
-      run: |
-        dotnet restore
+    - name: Setup NuGet
+      uses: nuget/setup-nuget@v1
+
+    # install dependencies  
+    - name: NuGet Restore
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: nuget restore ZotapaySDK.sln
       
-      # build project
+    # build project
     - name: Build
       run: dotnet build --configuration ${{env.config}} --no-restore
       
-    - name: Grab pr build number (if pr)
-      id: PRNUMBER
-      if: ${{ github.event_name == 'pull_request' }}
-      uses: kkak10/pr-number-action@v1.3
-      
-      # set report file and title 
-    - name: Set Test Title
-      shell: bash
-      run: | 
-            if (${{ github.event_name == 'pull_request' }}); then
-              echo "::set-env name=title::Test Run for PR #${{steps.PRNUMBER.outputs.pr}} (${{github.run_number}})"
-              echo "::set-env name=file_name::TestReport.${{steps.PRNUMBER.outputs.pr}}.${{github.run_number}}.md"
-            else
-              echo "::set-env name=title::Test Run ${{github.run_number}}"
-              echo "::set-env name=file_name::TestReport.${{github.run_number}}.md"
-            fi
-      
-      # run tests with built project
+    # run tests with built project
     - name: Test PR      
       run: |
-        dotnet test --no-restore --no-build --configuration ${{env.config}} --logger:"liquid.md;LogFileName=${{github.workspace}}/${{env.file_name}};Title=${{env.title}};"
-      
-      # upload report as build artifact
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2
-      if: ${{always()}}
+        dotnet test --no-restore --no-build --configuration ${{env.config}} --logger GitHubActions
+
+    - name: Upload coverage
+      uses: codecov/codecov-action@v1
       with:
-        name: 'Test Run'
-        path: ${{github.workspace}}/${{env.file_name}}
-      
-      # add report as PR comment (if PR)
-    - name: Comment PR
-      if: ${{ github.event_name == 'pull_request' }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        hub api "repos/{owner}/{repo}/issues/${{steps.PRNUMBER.outputs.pr}}/comments" --field body=@${{github.workspace}}/${{env.file_name}}
+        token: ${{ secrets.CODECOV_TOKEN }}
