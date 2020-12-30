@@ -2,7 +2,7 @@
 {
     using System.Runtime.Serialization;
     using ZotapaySDK.Contracts;
-    
+
     public class MGPayoutData : IData
     {
         /// <summary>

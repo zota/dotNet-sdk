@@ -21,7 +21,7 @@ The SDK covers all available functionality that ZotaPay's Merchant API exposes.
 
 ### Requirements
 * A functioning Zotapay Sandbox or Production account and related credentials
-* netstandard2.1 (or higher)
+* netstandard2.0 (or higher)
 
 ### Supported .NET versions
 |  Version  |  Release Date | Support Level | Supported Patch Version | End of Support |
