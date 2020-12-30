@@ -50,7 +50,7 @@ jobs:
     # Setup package cache
     - uses: actions/cache@v2
       with:
-        path: ${{ env.NUGET_PACKAGES }}
+        path: ${{ env.NUGET_PACKAGE_PATH }}
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
         restore-keys: |
           ${{ runner.os }}-nuget-
