@@ -1,7 +1,5 @@
 name: .NET Core Build
 
-# More inspiration here:
-# https://github.com/nogic1008/dotnet-ci-example/blob/master/.github/workflows/dotnetcore.yml
 on:
   push:
     branches: [ master ]
@@ -10,6 +8,24 @@ on:
     types: [ opened, synchronize ]
 
 jobs:
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1
+      - name: Restore Tool
+        run: dotnet tool restore
+      - name: Add Problem Matcher for dotnet-format
+        uses: xt0rted/dotnet-format-problem-matcher@v1
+      - name: Lint
+      - run: dotnet tool install -g dotnet-format
+        run: dotnet format --dry-run
+
   build:
     runs-on: windows-latest
     env:
