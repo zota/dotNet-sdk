@@ -35,7 +35,7 @@
         /// </summary>
         [Required, StringLength(64, MinimumLength = 1)]
         [DataMember(Name = "cardHolderName")]
-        public string CardHolderName { get; set; }        
+        public string CardHolderName { get; set; }
 
         /// <summary>
         /// Card number (PAN)
@@ -44,7 +44,7 @@
         [DataMember(Name = "cardNumber")]
         public string CardNumber { get; set; }
 
-        public override IMGResult GetResultInstance() 
+        public override IMGResult GetResultInstance()
         {
             return new MGDepositCardResult();
         }

@@ -10,10 +10,10 @@
         public void QueryRequestShouldHandleError()
         {
             // Arrange
-            var queryRequest = new MGQueryTxnRequest{};
+            var queryRequest = new MGQueryTxnRequest { };
             var client = Mocks.GetMockedMGClient(null);
             var expectedMessage = "The OrderID field is required. | The MerchantOrderID field is required.";
-            
+
             // Act 
             MGQueryTxnResult actual = client.CheckOrderStatus(queryRequest).Result;
 
@@ -26,7 +26,8 @@
         public void QueryRequestSuccess()
         {
             // Arrange
-            var queryRequest = new MGQueryTxnRequest {
+            var queryRequest = new MGQueryTxnRequest
+            {
                 OrderID = "1234567",
                 MerchantOrderID = "merch-order-id",
             };

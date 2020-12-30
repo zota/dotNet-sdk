@@ -12,12 +12,12 @@ namespace Tests
         public void DepositSuccess()
         {
             // Arrange
-            MGDepositResult expectedResult = new MGDepositResult() 
-            { 
+            MGDepositResult expectedResult = new MGDepositResult()
+            {
                 IsSuccess = true,
                 Code = "200",
                 Message = null,
-                Data = new DepositResponseData() 
+                Data = new DepositResponseData()
                 {
                     DepositUrl = "https://api.zotapay.com/api/v1/deposit/init/8b3a6b89697e8ac8f45d964bcc90c7ba41764acd/",
                     MerchantOrderID = "QvE8dZshpKhaOmHY",
@@ -29,9 +29,21 @@ namespace Tests
             MGClient client = Mocks.GetMockedMGClient(httpClient: httpMock);
             var DepositRequest = new MGDepositRequest
             {
-                MerchantOrderID = "QvE8dZshpKhaOmHY",OrderAmount = "100.00",CustomerEmail = "customer@test.com",OrderCurrency = "USD",MerchantOrderDesc = "desc",CustomerFirstName = "John",
-                CustomerLastName = "Doe",CustomerAddress = "The Moon, hill 42",CustomerCity = "Sofia",CustomerCountryCode = "BG",CustomerZipCode = "1303",
-                CustomerPhone = "123",CustomerIP = "127.0.0.1",RedirectUrl = "https://example-merchant.com/payment/return",CheckoutUrl = "https://example-merchant.com/deposit"
+                MerchantOrderID = "QvE8dZshpKhaOmHY",
+                OrderAmount = "100.00",
+                CustomerEmail = "customer@test.com",
+                OrderCurrency = "USD",
+                MerchantOrderDesc = "desc",
+                CustomerFirstName = "John",
+                CustomerLastName = "Doe",
+                CustomerAddress = "The Moon, hill 42",
+                CustomerCity = "Sofia",
+                CustomerCountryCode = "BG",
+                CustomerZipCode = "1303",
+                CustomerPhone = "123",
+                CustomerIP = "127.0.0.1",
+                RedirectUrl = "https://example-merchant.com/payment/return",
+                CheckoutUrl = "https://example-merchant.com/deposit"
             };
 
             // Act
@@ -73,7 +85,7 @@ namespace Tests
         }
 
         [Test]
-        public void DepositCatchesUnexpectedResponse() 
+        public void DepositCatchesUnexpectedResponse()
         {
             // Arrange
             string responseMessage = "!@#$%^&*() -- not a valid json message, that will cause an exception -- !@#$%^&*()";
@@ -115,7 +127,8 @@ namespace Tests
         public void TestDepositSignature()
         {
             // Arrange
-            MGDepositRequest request = new MGDepositRequest() {
+            MGDepositRequest request = new MGDepositRequest()
+            {
                 MerchantOrderID = "12345",
                 OrderAmount = "100.00",
                 CustomerEmail = "customer@test.com",

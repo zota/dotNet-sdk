@@ -78,7 +78,7 @@
 
             // Validate MGClient
             string MGClientErrorMessage = ValidateMGClient();
-            if (!string.IsNullOrEmpty(MGClientErrorMessage)) 
+            if (!string.IsNullOrEmpty(MGClientErrorMessage))
             {
                 result.IsSuccess = false;
                 result.Message = MGClientErrorMessage;
@@ -99,7 +99,7 @@
             request.SetupPrivateMembers(this.merchantId);
             request.GenerateSignature(this.endpoint, this.merchantSecret);
             string requestUrl = request.GetRequestUrl(this.requestUrl, this.endpoint);
-            
+
             try
             {
                 // Create json payload string and wrap it as http content
@@ -109,21 +109,23 @@
 
                 // Request & parse response async
                 HttpResponseMessage response = new HttpResponseMessage();
-                if (request.GetMethod() == HttpMethod.Post) {
+                if (request.GetMethod() == HttpMethod.Post)
+                {
                     response = await http.PostAsync(requestUrl, httpContent);
-                
-                } 
-                else if (request.GetMethod() == HttpMethod.Get) {
+
+                }
+                else if (request.GetMethod() == HttpMethod.Get)
+                {
                     response = await http.GetAsync(requestUrl);
                 }
                 this.rawResponse = response.Content.ReadAsStringAsync().Result;
                 result = (IMGResult)JsonConvert.DeserializeObject(
-                        this.rawResponse, 
+                        this.rawResponse,
                         Type.GetType(result.ToString())
                     );
                 result.IsSuccess = ((result.Code == API.CODE_SUCCESS) && (response.StatusCode == System.Net.HttpStatusCode.OK));
                 return result;
-            } 
+            }
             catch (Exception e)
             {
                 // Indicate fail and reason
@@ -141,11 +143,12 @@
         /// <returns>Task<MGDepositResult> containing Zotapay API response</returns>
         public async Task<MGDepositResult> InitDeposit(MGDepositRequest requestPayload)
         {
-            if (requestPayload.GetType() != typeof(MGDepositRequest)) 
+            if (requestPayload.GetType() != typeof(MGDepositRequest))
             {
-                return new MGDepositResult { 
-                    IsSuccess = false, 
-                    Message = "Got MGDepositCardRequest instead of MGDepositRequest. Please use MGClient.InitCardDeposit for credit card integrations." 
+                return new MGDepositResult
+                {
+                    IsSuccess = false,
+                    Message = "Got MGDepositCardRequest instead of MGDepositRequest. Please use MGClient.InitCardDeposit for credit card integrations."
                 };
             }
             var result = await Send(requestPayload);
@@ -196,7 +199,7 @@
             errorMessage += string.IsNullOrWhiteSpace(this.merchantSecret) ? "merchantSecret " : "";
             errorMessage += string.IsNullOrWhiteSpace(this.requestUrl) ? "requestUrl " : "";
             errorMessage += string.IsNullOrWhiteSpace(this.merchantId) ? "merchantId " : "";
-            if (!string.IsNullOrWhiteSpace(errorMessage)) 
+            if (!string.IsNullOrWhiteSpace(errorMessage))
             {
                 errorMessage = "MGClient missing parameters: " + errorMessage;
             }
@@ -208,16 +211,18 @@
         /// </summary>
         /// <param name="rawJsonCallbackString"></param>
         /// <returns>MGCallback object containing the callback data</returns>
-        public MGCallback Parse(string rawJsonCallbackString) {
+        public MGCallback Parse(string rawJsonCallbackString)
+        {
             try
             {
                 var callback = JsonConvert.DeserializeObject<MGCallback>(rawJsonCallbackString);
                 callback.validate(this.endpoint, this.merchantSecret);
                 return callback;
-            } 
+            }
             catch (Exception e)
             {
-                return new MGCallback {
+                return new MGCallback
+                {
                     IsVerified = false,
                     ErrorMessage = e.Message,
                 };

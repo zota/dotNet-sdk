@@ -14,7 +14,8 @@
     /// </summary>
     public static class Mocks
     {
-        public static MGClient GetMockedMGClient(HttpClient httpClient) {
+        public static MGClient GetMockedMGClient(HttpClient httpClient)
+        {
             return new MGClient(
                 merchantSecret: "merchant-secret",
                 merchantId: "merchant-id",
