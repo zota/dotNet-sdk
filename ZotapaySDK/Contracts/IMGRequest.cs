@@ -8,7 +8,7 @@
 
         public IMGResult GetResultInstance();
 
-        internal virtual void SetupPrivateMembers(string merchantId) { }
+        internal void SetupPrivateMembers(string merchantId);
 
         internal System.Net.Http.HttpMethod GetMethod();
     };

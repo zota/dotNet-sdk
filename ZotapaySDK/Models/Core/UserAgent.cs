@@ -1,6 +1,7 @@
 ﻿namespace ZotapaySDK.Models
 {
     using System;
+    using System.Reflection;
     using System.Text;
     using ZotapaySDK.Static;
 
@@ -15,8 +16,9 @@
         /// <returns>A string containing the signature for the UserAgent header.</returns>
         public static string GetUserAgentHeader()
         {
-            // TODO get the accurate/current version
-            var header = new StringBuilder("Zotapay/NET-SDK " + Constants.Version.LATEST + " (");
+            // get the accurate/current version
+            var currentVersion = Assembly.LoadFrom("ZotapaySDK").GetName().Version.ToString();
+            var header = new StringBuilder("Zotapay/NET-SDK " + currentVersion + " (");
             header.Append(string.Join(";", new string[]
             {
                 FormatUserAgentParameter("lang", "DOTNET"),

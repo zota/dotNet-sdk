@@ -207,5 +207,10 @@
         {
             return HttpMethod.Post;
         }
+
+        void IMGRequest.SetupPrivateMembers(string merchantId)
+        {
+            return;
+        }
     }
 }
