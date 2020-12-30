@@ -82,17 +82,6 @@ namespace ZotapaySDK.Static
         }
 
         /// <summary>
-        /// SDK Version history
-        /// </summary>
-        public static class Version
-        {
-            /// <summary>
-            /// Current SDK version
-            /// </summary>
-            public const string LATEST = "1.0.0";
-        }
-
-        /// <summary>
         /// Setting to indicate MG environment to be used
         /// </summary>
         public enum MGEnvironment
