@@ -1,3 +1,6 @@
+[![codecov](https://codecov.io/gh/zotapay/dotNet-sdk/branch/master/graph/badge.svg?token=E49V7QD7XW)](https://codecov.io/gh/zotapay/dotNet-sdk)
+![.NET Core Lib Test](https://github.com/zotapay/dotNet-sdk/workflows/.NET%20Core%20Build/badge.svg)
+
 # Official .NET REST API SDK
 This is the **official** page of the [Zotapay](http://www.zotapay.com) .NET SDK. It is intended to be used by 
 developers who run modern .NET applications and would like to integrate our next generation payments platform.
@@ -259,3 +262,7 @@ All request objects passed to the `MGClient` will get validated. If an invalid m
 actual call to the API will be made, hence the `Code` property showing the HTTP will be null. The purpose is to check whether all the values passsed to the different
 parameters is in-line with what Zotapay's endpoint expects. See the API DOCS for more info and guidance about the
 format of the different parameters.
+
+## Test Coverage
+
+[![codecov](https://codecov.io/gh/zotapay/dotNet-sdk/graphs/tree.svg?width=650&height=150&src=pr&token=E49V7QD7XW)](https://codecov.io/gh/zotapay/dotNet-sdk/)
