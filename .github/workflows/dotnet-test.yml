@@ -21,13 +21,14 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1
-    - name: Restore Tool
-      run: dotnet tool restore
+    - name: Restore Tools
+      run: |
+        dotnet tool restore
+        dotnet tool install -g dotnet-format
     - name: Add Problem Matcher for dotnet-format
       uses: xt0rted/dotnet-format-problem-matcher@v1
     - name: Lint
-    - run: dotnet tool install -g dotnet-format
-    - run: dotnet format --dry-run
+      run: dotnet format --dry-run
 
   build:
     name: Test .NET Side by Side
@@ -94,3 +95,4 @@ jobs:
       uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
+        file: "!**/.nuget/packages/**/*.*"
