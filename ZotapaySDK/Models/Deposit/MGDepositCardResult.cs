@@ -1,7 +1,7 @@
 ﻿namespace ZotapaySDK.Models.Deposit
 {
     using System.Runtime.Serialization;
-    
+
     public class MGDepositCardResult : DepositResultBase
     {
         /// <summary>

@@ -32,7 +32,7 @@
         /// <summary>
         /// Brief order description
         /// </summary>
-        [Required, StringLength(128)] 
+        [Required, StringLength(128)]
         [DataMember(Name = "merchantOrderDesc", IsRequired = true, EmitDefaultValue = false)]
         public string MerchantOrderDesc { get; set; }
 

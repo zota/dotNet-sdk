@@ -35,6 +35,6 @@
         /// Indicates wether the request object was valid and an actual http request was send
         /// </summary>
         public bool IsSuccess { get; set; }
-        IData IMGResult.Data { get { return Data; } set { }  }
+        IData IMGResult.Data { get { return Data; } set { } }
     }
 }

@@ -6,7 +6,7 @@
     using ZotapaySDK.Contracts;
     using ZotapaySDK.Static;
     using static ZotapaySDK.Static.Constants;
-    
+
     /// <summary>
     /// Payout Request
     /// </summary>
