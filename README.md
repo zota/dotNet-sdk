@@ -32,7 +32,7 @@ The SDK covers all available functionality that ZotaPay's Merchant API exposes.
 
 ### Installation
 ```sh
-dotnet package add zotapaysdk
+dotnet package add zotapay
 ```
 
 
@@ -74,11 +74,12 @@ configuration is the one passed to the client itself.
 
 Example:
 ```csharp
+using Zotapay;
+
 MGClient client = new MGClient(merchantSecret: "merchant-secret-key",
                                     endpointId: "400009",
                                     merchantId: "merchant-id",
                                     requestUrl: "https://secure.zotapay-stage.com");
-)
 ```
 
 Passing configuration to the client itself is best when supporting multiple clients.
@@ -98,7 +99,7 @@ ZOTAPAY_REQUEST_URL             - https://api.zotapay-sandbox.com or https://api
 ## Usage
 In order to use the SDK we need to instantiate a client:
 ```csharp
-using ZotapaySDK
+using Zotapay;
 
 MGClient client = new MGClient(useConstantUrl: true, environment: Constants.MGEnvironment.Sandbox);
 ```
@@ -107,7 +108,9 @@ MGClient client = new MGClient(useConstantUrl: true, environment: Constants.MGEn
 
 Construct the deposit request:
 
-```.NET
+```csharp
+using Zotapay.Models;
+
 MGDepositRequest DepositOrderRequest = new MGDepositRequest
 {
     MerchantOrderID = "QvE8dZshpKhaOmHY1",
@@ -127,37 +130,40 @@ MGDepositRequest DepositOrderRequest = new MGDepositRequest
     CheckoutUrl = "https://example-merchant.com/deposit",
     CallbackUrl = "https://example-merchant.com/payment/callback",
 };
-
 ```
 
 or alternatively set its properties after instantiating to see the intellisense hints with description for each parameter:
 
 
 ```csharp
+using Zotapay.Models;
+
 MGDepositRequest DepositOrderRequest = new MGDepositRequest();
 
-DepositOrderRequest.MerchantOrderID = "QvE8dZshpKhaOmHY1",
-DepositOrderRequest.OrderAmount = "100.00",
-DepositOrderRequest.CustomerEmail = "customer@test.com",
-DepositOrderRequest.OrderCurrency = "USD",
-DepositOrderRequest.MerchantOrderDesc = "desc",
-DepositOrderRequest.CustomerFirstName = "John",
-DepositOrderRequest.CustomerLastName = "Doe",
-DepositOrderRequest.CustomerAddress = "The Moon, hill 42",
-DepositOrderRequest.CustomerCity = "Sofia",
-DepositOrderRequest.CustomerCountryCode = "BG",
-DepositOrderRequest.CustomerZipCode = "1303",
-DepositOrderRequest.CustomerPhone = "123",
-DepositOrderRequest.CustomerIP = "127.0.0.1",
-DepositOrderRequest.RedirectUrl = "https://example-merchant.com/payment/return",
-DepositOrderRequest.CheckoutUrl = "https://example-merchant.com/deposit",
-DepositOrderRequest.CallbackUrl = "https://example-merchant.com/payment/callback",
+DepositOrderRequest.MerchantOrderID = "QvE8dZshpKhaOmHY1";
+DepositOrderRequest.OrderAmount = "100.00";
+DepositOrderRequest.CustomerEmail = "customer@test.com";
+DepositOrderRequest.OrderCurrency = "USD";
+DepositOrderRequest.MerchantOrderDesc = "desc";
+DepositOrderRequest.CustomerFirstName = "John";
+DepositOrderRequest.CustomerLastName = "Doe";
+DepositOrderRequest.CustomerAddress = "The Moon, hill 42";
+DepositOrderRequest.CustomerCity = "Sofia";
+DepositOrderRequest.CustomerCountryCode = "BG";
+DepositOrderRequest.CustomerZipCode = "1303";
+DepositOrderRequest.CustomerPhone = "123";
+DepositOrderRequest.CustomerIP = "127.0.0.1";
+DepositOrderRequest.RedirectUrl = "https://example-merchant.com/payment/return";
+DepositOrderRequest.CheckoutUrl = "https://example-merchant.com/deposit";
+DepositOrderRequest.CallbackUrl = "https://example-merchant.com/payment/callback";
 
 ```
 
 Sending the request to Zotapay happens through the client:
 
 ```csharp
+using Zotapay.Models;
+
 MGDepositResult depositResponse = await client.InitDeposit(DepositOrderRequest);
 
 // Check the request status
@@ -185,6 +191,8 @@ Sending a payout request is almost identical to sending a deposit request.
 The request is built:
 
 ```csharp
+using Zotapay.Models;
+
 MGPayoutRequest payoutRequest = new MGPayoutRequest
 {
     MerchantOrderID = "Q44mHY18",
