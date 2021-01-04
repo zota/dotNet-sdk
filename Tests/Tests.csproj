@@ -27,7 +27,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\ZotapaySDK\Zotapay.csproj" />
+    <ProjectReference Include="..\Zotapay\Zotapay.csproj" />
   </ItemGroup>
 
 </Project>
