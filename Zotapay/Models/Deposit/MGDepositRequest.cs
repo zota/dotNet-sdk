@@ -1,12 +1,12 @@
-﻿namespace ZotapaySDK.Models
+﻿namespace Zotapay.Models
 {
     using Newtonsoft.Json;
     using System.ComponentModel.DataAnnotations;
     using System.Net.Http;
     using System.Runtime.Serialization;
-    using ZotapaySDK.Contracts;
-    using ZotapaySDK.Static;
-    using static ZotapaySDK.Static.Constants;
+    using Zotapay.Contracts;
+    using Zotapay.Static;
+    using static Zotapay.Static.Constants;
 
     /// <summary>
     /// Deposit request

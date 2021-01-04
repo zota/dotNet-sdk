@@ -4,10 +4,11 @@
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
-    using ZotapaySDK.Models;
+    using Zotapay.Models;
     using Moq;
     using Moq.Protected;
-    using ZotapaySDK.Models.Deposit;
+    using Zotapay.Models.Deposit;
+    using Zotapay;
 
     /// <summary>
     /// Static class with pre-defined mock objects

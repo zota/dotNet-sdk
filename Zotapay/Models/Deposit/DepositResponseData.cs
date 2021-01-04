@@ -1,18 +1,18 @@
-﻿namespace ZotapaySDK.Models.Deposit
+﻿namespace Zotapay.Models
 {
     using System.Runtime.Serialization;
-    using ZotapaySDK.Contracts;
+    using Zotapay.Contracts;
 
     /// <summary>
-    /// Direct card deposits will happen "synchronously", hence there will be no deposit url in the response
+    /// Zotapay data response parameter class
     /// </summary>
-    public class DepositCardResponseData : IData
+    public class DepositResponseData : IData
     {
         /// <summary>
-        /// The status of the requested payment (e.g PROCESSING).
+        /// The URL of the payment form, merchant should redirect the (waiting) end-user to this URL (HTTP 302).
         /// </summary>
-        [DataMember(Name = "status", EmitDefaultValue = false)]
-        public string Status { get; set; }
+        [DataMember(Name = "depositUrl", EmitDefaultValue = false)]
+        public string DepositUrl { get; set; }
 
         /// <summary>
         /// Merchants' order unique identifier, provided in the original Deposit Request.

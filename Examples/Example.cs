@@ -1,11 +1,12 @@
 ﻿namespace Examples
 {
     using System;
-    using ZotapaySDK.Models;
-    using ZotapaySDK.Static;
-    using ZotapaySDK.Models.OrderStatusCheck;
-    using ZotapaySDK.Models.Payout;
-    using ZotapaySDK.Callback;
+    using Zotapay.Models;
+    using Zotapay.Static;
+    using Zotapay.Models.OrderStatusCheck;
+    using Zotapay.Models.Payout;
+    using Zotapay.Callback;
+    using Zotapay;
 
     class Example
     {

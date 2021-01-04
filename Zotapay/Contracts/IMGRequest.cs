@@ -1,4 +1,4 @@
-﻿namespace ZotapaySDK.Contracts
+﻿namespace Zotapay.Contracts
 {
     public interface IMGRequest
     {

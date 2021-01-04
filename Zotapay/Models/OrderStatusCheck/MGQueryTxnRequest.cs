@@ -1,4 +1,4 @@
-﻿namespace ZotapaySDK.Models.OrderStatusCheck
+﻿namespace Zotapay.Models.OrderStatusCheck
 {
     using System;
     using System.Collections.Generic;
@@ -7,9 +7,9 @@
     using System.Runtime.Serialization;
     using System.Security.Cryptography;
     using System.Text;
-    using ZotapaySDK.Contracts;
-    using ZotapaySDK.Static;
-    using static ZotapaySDK.Static.Constants;
+    using Zotapay.Contracts;
+    using Zotapay.Static;
+    using static Zotapay.Static.Constants;
 
     /// <summary>
     /// Order status check request, as per https://doc.zotapay.com/deposit/1.0/#order-status-request

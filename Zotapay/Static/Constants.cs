@@ -1,9 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Net;
-using System.Security.Cryptography;
-using System.Text;
-
-namespace ZotapaySDK.Static
+﻿namespace Zotapay.Static
 {
     /// <summary>
     /// Zotapay constants class
