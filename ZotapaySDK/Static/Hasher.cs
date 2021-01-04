@@ -1,4 +1,4 @@
-﻿namespace ZotapaySDK.Static
+﻿namespace Zotapay.Static
 {
     using System.Security.Cryptography;
     using System.Text;

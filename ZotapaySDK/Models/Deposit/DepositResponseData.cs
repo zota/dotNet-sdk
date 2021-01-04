@@ -1,7 +1,7 @@
-﻿namespace ZotapaySDK.Models
+﻿namespace Zotapay.Models
 {
     using System.Runtime.Serialization;
-    using ZotapaySDK.Contracts;
+    using Zotapay.Contracts;
 
     /// <summary>
     /// Zotapay data response parameter class

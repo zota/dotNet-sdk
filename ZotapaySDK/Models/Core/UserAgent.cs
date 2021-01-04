@@ -1,9 +1,8 @@
-﻿namespace ZotapaySDK.Models
+﻿namespace Zotapay.Models
 {
     using System;
     using System.Reflection;
     using System.Text;
-    using ZotapaySDK.Static;
 
     /// <summary>
     /// Zotapay User-Agent Header implementation class

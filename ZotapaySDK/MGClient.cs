@@ -1,4 +1,4 @@
-﻿namespace ZotapaySDK.Models
+﻿namespace Zotapay
 {
     using System;
     using System.Net.Http;
@@ -7,13 +7,14 @@
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using System.Text;
-    using ZotapaySDK.Contracts;
-    using ZotapaySDK.Models.Deposit;
-    using static ZotapaySDK.Static.Constants;
-    using static ZotapaySDK.Models.UserAgent;
-    using ZotapaySDK.Models.OrderStatusCheck;
-    using ZotapaySDK.Callback;
-    using ZotapaySDK.Models.Payout;
+    using Zotapay.Contracts;
+    using Zotapay.Models.Deposit;
+    using static Zotapay.Static.Constants;
+    using static Zotapay.Models.UserAgent;
+    using Zotapay.Models.OrderStatusCheck;
+    using Zotapay.Callback;
+    using Zotapay.Models.Payout;
+    using Zotapay.Models;
 
     /// <summary>
     /// Zotapay engine for all the integration methods

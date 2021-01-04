@@ -2,8 +2,8 @@
 {
     using NUnit.Framework;
     using System.Net;
-    using ZotapaySDK.Models;
-    using ZotapaySDK.Models.Payout;
+    using Zotapay;
+    using Zotapay.Models.Payout;
 
     public class PayoutTests
     {

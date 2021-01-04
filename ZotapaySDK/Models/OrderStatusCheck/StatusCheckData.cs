@@ -1,7 +1,7 @@
-﻿namespace ZotapaySDK.Models.OrderStatusCheck
+﻿namespace Zotapay.Models.OrderStatusCheck
 {
     using System.Runtime.Serialization;
-    using ZotapaySDK.Contracts;
+    using Zotapay.Contracts;
 
     public class StatusCheckData : IData
     {

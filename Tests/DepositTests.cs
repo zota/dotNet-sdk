@@ -3,8 +3,9 @@ namespace Tests
     using NUnit.Framework;
     using System.Net;
     using System.Threading.Tasks;
-    using ZotapaySDK.Models;
-    using ZotapaySDK.Models.Deposit;
+    using Zotapay.Models;
+    using Zotapay.Models.Deposit;
+    using Zotapay;
 
     public class Tests
     {

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZotapaySDK", "ZotapaySDK\ZotapaySDK.csproj", "{B34191FE-CA5D-49D6-992A-A045B5FDFF41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zotapay", "ZotapaySDK\Zotapay.csproj", "{B34191FE-CA5D-49D6-992A-A045B5FDFF41}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{162F45F2-D361-4915-A7BD-ACBA45AE8B96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Examples.csproj", "{632349ED-858D-4C36-BABB-6E0BA9F9512B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Examples", "Examples\Examples.csproj", "{632349ED-858D-4C36-BABB-6E0BA9F9512B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

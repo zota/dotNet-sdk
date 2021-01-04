@@ -1,8 +1,8 @@
-﻿namespace ZotapaySDK.Models.Deposit
+﻿namespace Zotapay.Models.Deposit
 {
     using System.ComponentModel.DataAnnotations;
     using System.Runtime.Serialization;
-    using ZotapaySDK.Contracts;
+    using Zotapay.Contracts;
 
     /// <summary>
     /// Card payment request with card data already collected

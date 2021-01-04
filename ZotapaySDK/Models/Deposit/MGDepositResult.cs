@@ -1,7 +1,7 @@
-﻿namespace ZotapaySDK.Models
+﻿namespace Zotapay.Models
 {
     using System.Runtime.Serialization;
-    using ZotapaySDK.Contracts;
+    using Zotapay.Contracts;
 
     /// <summary>
     /// Wrapper class with http and validation results

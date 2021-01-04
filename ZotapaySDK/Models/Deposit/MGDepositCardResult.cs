@@ -1,4 +1,4 @@
-﻿namespace ZotapaySDK.Models.Deposit
+﻿namespace Zotapay.Models.Deposit
 {
     using System.Runtime.Serialization;
 

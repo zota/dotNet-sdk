@@ -1,7 +1,7 @@
-﻿namespace ZotapaySDK.Models.Payout
+﻿namespace Zotapay.Models.Payout
 {
     using System.Runtime.Serialization;
-    using ZotapaySDK.Contracts;
+    using Zotapay.Contracts;
 
     public class MGPayoutResult : IMGResult
     {

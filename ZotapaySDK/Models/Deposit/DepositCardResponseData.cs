@@ -1,7 +1,7 @@
-﻿namespace ZotapaySDK.Models.Deposit
+﻿namespace Zotapay.Models.Deposit
 {
     using System.Runtime.Serialization;
-    using ZotapaySDK.Contracts;
+    using Zotapay.Contracts;
 
     /// <summary>
     /// Direct card deposits will happen "synchronously", hence there will be no deposit url in the response

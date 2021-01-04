@@ -1,7 +1,7 @@
-﻿namespace ZotapaySDK.Models.Deposit
+﻿namespace Zotapay.Models.Deposit
 {
     using System.Runtime.Serialization;
-    using ZotapaySDK.Contracts;
+    using Zotapay.Contracts;
 
     public abstract class DepositResultBase : IMGResult
     {

@@ -1,7 +1,7 @@
-﻿namespace ZotapaySDK.Callback
+﻿namespace Zotapay.Callback
 {
     using System.Runtime.Serialization;
-    using ZotapaySDK.Static;
+    using Zotapay.Static;
 
     /// <summary>
     /// Callback notification object which will be send from ZotaPay

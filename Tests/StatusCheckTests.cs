@@ -2,7 +2,7 @@
 {
     using NUnit.Framework;
     using System.Net;
-    using ZotapaySDK.Models.OrderStatusCheck;
+    using Zotapay.Models.OrderStatusCheck;
 
     class StatusCheckTests
     {
