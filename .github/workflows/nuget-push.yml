@@ -5,8 +5,10 @@ on:
       - '.github/**'
       - 'README.md'
       - 'docs/**'
+  pull_request:
+    types: [ opened, synchronize ]
 
-name: NuGet Package Push
+name: NuGet Package Release
 
 env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true

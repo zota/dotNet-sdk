@@ -1,28 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Authors>Zota Technology LTD</Authors>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <Copyright>© 2020 Zota Technology LTD</Copyright>
-    <Description>Zotapay is a next-generation payment services and technology provider for alternative payments.</Description>
     <GenerateRuntimeConfigurationFiles>True</GenerateRuntimeConfigurationFiles>
     <LangVersion>8.0</LangVersion>
     <NeutralLanguage>en</NeutralLanguage>
     <OutputType>Library</OutputType>
     <Owners>Zotapay</Owners>
     <PackOnBuild>true</PackOnBuild>
-    <PackageIconUrl>https://avatars0.githubusercontent.com/u/65024721?s=200%26v=4</PackageIconUrl>
     <PackageId>ZotapaySDK</PackageId>
-    <PackageLicenseUrl>https://github.com/zotapay/dotNet-sdk/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://zotapay.com</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/zotapay/dotNet-sdk/releases</PackageReleaseNotes>
     <PackageTags>Zotapay mpsa alternative payments</PackageTags>
-    <PackageVersion>1.1.2</PackageVersion>
-    <ReleaseVersion>1.x</ReleaseVersion>
-    <RepositoryUrl>https://github.com/zotapay/dotNet-sdk/releases</RepositoryUrl>
-    <Summary>C# SDK for the Zotapay RESTful API</Summary>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Title>Zotapay C# Client</Title>
+    <Authors>Zota Technology LTD</Authors>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,7 +23,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
   </PropertyGroup>
   
   <ItemGroup>
