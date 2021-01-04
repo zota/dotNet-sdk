@@ -9,7 +9,7 @@
         <license type="expression">Apache-2.0</license>
         <icon>..\images\zota-logo-nuget.png</icon>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <releaseNotes>Initial SDK release.</releaseNotes>
+        <releaseNotes>Zotapay SDK release.</releaseNotes>
         <description>Zotapay is a next-generation payment services and technology provider for alternative payments.</description>
         <copyright>© 2020 Zota Technology LTD</copyright>
         <tags>Zotapay alternative local payments</tags>
