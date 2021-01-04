@@ -1,0 +1,45 @@
+on:
+  release:
+    types: [published]
+    paths-ignore:
+      - '.github/**'
+      - 'README.md'
+      - 'docs/**'
+
+name: NuGet Package Release
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_NOLOGO: true
+  NUGET_XMLDOC_MODE: skip
+  NUGET_PACKAGE_PATH: ${{ github.workspace }}/.nuget/packages
+
+jobs:
+  build:
+    name: NuGet Push
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 1
+
+      - name: Setup .NET Core 3.1
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1'
+
+      - name: Install dependencies
+        run: nuget restore
+
+      - name: Build SDK
+        run: dotnet build ZotapaySDK --configuration Release --no-restore
+
+      - name: Publish to NuGet
+        uses: brandedoutcast/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: ZotapaySDK/ZotapaySDK.csproj
+          VERSION_REGEX: '^\s*<PackageVersion>(.*)<\/PackageVersion>\s*$'
+          TAG_FORMAT: '*'
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
