@@ -3,9 +3,17 @@ name: .NET Core Build
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - '.github/**'
+      - 'Examples/**'
+      - 'README**'
   pull_request:
     branches: [ master ]
     types: [ opened, synchronize ]
+    paths-ignore:
+      - '.github/**'
+      - 'Examples/**'
+      - 'README**'
 
 
 env:

@@ -1,0 +1,25 @@
+name: Release Creation Trigger
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '.github/**'
+      - 'Tests/**'
+      - 'README.md'
+      - 'Examples/**'
+
+jobs:
+  build:
+    name: Triggered Release Creation
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@master
+      with:
+        fetch-depth: '0'
+    - name: Bump version and push tag
+      uses: anothrNick/github-tag-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.MG_GITHUB_TOKEN }}
+        WITH_V: false
+        DEFAULT_BUMP: patch
