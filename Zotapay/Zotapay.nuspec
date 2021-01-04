@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
-        <id>ZotapaySDK</id>
+        <id>Zotapay</id>
         <version>1.1.2</version>
         <authors>kantonov</authors>
         <owners>Zotapay</owners>
@@ -23,6 +23,6 @@
     <files>
         <file src="..\README.md" target="readme.txt" />
         <file src="..\images\zota-logo-nuget.png" target="images\" />
-    <!-- <file src="x64\Release\ZotapaySDK.dll" target="ZotapaySDK\x64\"></file> -->
+    <!-- <file src="x64\Release\Zotapay.dll" target="Zotapay\x64\"></file> -->
     </files>
 </package>
