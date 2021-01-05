@@ -1,16 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <Company>Zotapay</Company>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <GenerateRuntimeConfigurationFiles>True</GenerateRuntimeConfigurationFiles>
-    <LangVersion>8.0</LangVersion>
-    <NeutralLanguage>en</NeutralLanguage>
-    <PackageId>Zotapay</PackageId>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Authors>kantonov</Authors>
-  </PropertyGroup>
+	<PropertyGroup>
+		<Company>Zotapay</Company>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<GenerateRuntimeConfigurationFiles>True</GenerateRuntimeConfigurationFiles>
+		<LangVersion>8.0</LangVersion>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageId>Zotapay</PackageId>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<Authors>kantonov</Authors>
+		<OutputType>Library</OutputType>
+		<Copyright>© 2021 Zota Technology LTD</Copyright>
+		<PackageIcon>zota-logo-nuget.png</PackageIcon>
+		<NeutralLanguage>en</NeutralLanguage>
+		<Owners>Zotapay</Owners>
+		<PackageProjectUrl>https://zotapay.com</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/zotapay/dotNet-sdk</RepositoryUrl>
+		<PackageReleaseNotes>https://github.com/zotapay/dotNet-sdk/releases</PackageReleaseNotes>
+		<Summary>Zotapay RESTful API</Summary>
+		<PackageTags>Zotapay alternative local payments</PackageTags>
+		<Title>Zotapay C# SDK</Title>
+		<Description>Zotapay is a next-generation payment services and technology provider for alternative payments.</Description>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
@@ -28,10 +40,10 @@
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
       <_Parameter1>Tests</_Parameter1>
     </AssemblyAttribute>
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
+	<ItemGroup>
+		<None Include="..\images\zota-logo-nuget.png" Pack="true" PackagePath="\"/>
+	</ItemGroup>
 
 </Project>
