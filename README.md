@@ -1,6 +1,8 @@
 [![codecov](https://codecov.io/gh/zotapay/dotNet-sdk/branch/master/graph/badge.svg?token=E49V7QD7XW)](https://codecov.io/gh/zotapay/dotNet-sdk)
 ![.NET Core Lib Test](https://github.com/zotapay/dotNet-sdk/workflows/.NET%20Core%20Build/badge.svg)
 
+![c#-github](https://user-images.githubusercontent.com/174284/106497440-b6e9a600-64c6-11eb-9a12-83ec95725cea.jpg)
+
 # Official .NET REST API SDK
 This is the **official** page of the [Zotapay](http://www.zotapay.com) .NET SDK. It is intended to be used by 
 developers who run modern .NET applications and would like to integrate our next generation payments platform.
