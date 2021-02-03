@@ -7,13 +7,11 @@
 This is the **official** page of the [Zotapay](http://www.zotapay.com) .NET SDK. It is intended to be used by 
 developers who run modern .NET applications and would like to integrate our next generation payments platform.
 
+> This SDK is also available as a NuGet package here: https://www.nuget.org/packages/Zotapay.
  
-## REST API Docs
+## Developer Resources
 
-> **[Official Deposit Documentation](https://doc.zotapay.com/deposit/1.0/#introduction)**
-
-> **[Official Payout Documentation](https://doc.zotapay.com/payout/1.0/#introduction)**
-
+Documentation on the developer tools, various other SDKs and the API documentation this SDK implements are available on the [Zotapay Developers Portal](https://developers.zotapay.com/).
 
 ## Introduction
 This .NET SDK provides all the necessary methods for integrating the Zotapay Merchant API. 
