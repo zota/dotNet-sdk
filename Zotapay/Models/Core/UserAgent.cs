@@ -16,7 +16,16 @@
         public static string GetUserAgentHeader()
         {
             // get the accurate/current version
-            var currentVersion = Assembly.LoadFrom("Zotapay").GetName().Version.ToString();
+            var currentVersion = "";
+            try
+            {
+                currentVersion = Assembly.LoadFrom("Zotapay.dll").GetName().Version.ToString();
+            }
+            catch
+            {
+                // set the version manually in case of failure
+                currentVersion = "1.1.6e";
+            }
             var header = new StringBuilder("Zotapay/NET-SDK " + currentVersion + " (");
             header.Append(string.Join(";", new string[]
             {
