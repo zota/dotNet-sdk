@@ -151,8 +151,8 @@
         /// <summary>
         /// End user bank account name
         /// </summary>
-        [Required, StringLength(16)]
-        [DataMember(Name = "customerBankRoutingNumber", IsRequired = true, EmitDefaultValue = false)]
+        [StringLength(16)]
+        [DataMember(Name = "customerBankRoutingNumber", IsRequired = false, EmitDefaultValue = false)]
         public string CustomerBankRoutingNumber { get; set; }
 
         /// <summary>
