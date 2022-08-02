@@ -44,6 +44,12 @@
                 RedirectUrl = "https://example-merchant.com/payment/return",
                 CheckoutUrl = "https://example-merchant.com/deposit",
                 CallbackUrl = "https://example-merchant.com/callback",
+                CustomerCountryCode = "TH",
+                CustomerPersonalID = "12345678",
+                CustomerBankAccountNumberDigit = "02",
+                CustomerBankAccountType = "03",
+                CustomerBankSwiftCode = "123456789",
+                CustomerBankBranchDigit = "04",
             };
 
             // Act
@@ -94,6 +100,12 @@
                 RedirectUrl = "https://example-merchant.com/payment/return",
                 CheckoutUrl = "https://example-merchant.com/deposit",
                 CallbackUrl = "https://example-merchant.com/callback",
+                CustomerCountryCode = "TH",
+                CustomerPersonalID = "12345678",
+                CustomerBankAccountNumberDigit = "02",
+                CustomerBankAccountType = "03",
+                CustomerBankSwiftCode = "123456789",
+                CustomerBankBranchDigit = "04",
             };
 
             // Act
