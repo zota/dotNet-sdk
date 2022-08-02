@@ -81,7 +81,7 @@
         /// <summary>
         /// URL for end user redirection upon transaction completion, regardless of order status
         /// </summary>
-        [StringLength(128)]
+        [StringLength(255)]
         [DataMember(Name = "redirectUrl", IsRequired = true, EmitDefaultValue = false)]
         public string RedirectUrl { get; set; }
 
@@ -151,7 +151,7 @@
         /// <summary>
         /// End user bank account name
         /// </summary>
-        [StringLength(16)]
+        [StringLength(64)]
         [DataMember(Name = "customerBankRoutingNumber", IsRequired = false, EmitDefaultValue = false)]
         public string CustomerBankRoutingNumber { get; set; }
 
@@ -174,6 +174,48 @@
         /// </summary>
         [DataMember(Name = "signature", IsRequired = true, EmitDefaultValue = false)]
         public string Signature;
+
+        /// <summary>
+        /// End user two letter country code
+        /// </summary>
+        [StringLength(2)]
+        [DataMember(Name = "customerCountryCode", IsRequired = false, EmitDefaultValue = false)]
+        public string CustomerCountryCode { get; set; }
+
+        /// <summary>
+        /// End user personal ID number
+        /// </summary>
+        [StringLength(20)]
+        [DataMember(Name = "customerPersonalID", IsRequired = false, EmitDefaultValue = false)]
+        public string CustomerPersonalID { get; set; }
+
+        /// <summary>
+        /// End user bank account number control digit
+        /// </summary>
+        [StringLength(2)]
+        [DataMember(Name = "customerBankAccountNumberDigit", IsRequired = false, EmitDefaultValue = false)]
+        public string CustomerBankAccountNumberDigit { get; set; }
+
+        /// <summary>
+        /// End user bank account type, either checking or savings
+        /// </summary>
+        [StringLength(8)]
+        [DataMember(Name = "customerBankAccountType", IsRequired = false, EmitDefaultValue = false)]
+        public string CustomerBankAccountType { get; set; }
+
+        /// <summary>
+        /// End user bank swift code
+        /// </summary>
+        [StringLength(35)]
+        [DataMember(Name = "customerBankSwiftCode", IsRequired = false, EmitDefaultValue = false)]
+        public string CustomerBankSwiftCode { get; set; }
+
+        /// <summary>
+        /// End user bank branch control digit
+        /// </summary>
+        [StringLength(2)]
+        [DataMember(Name = "customerBankBranchDigit", IsRequired = false, EmitDefaultValue = false)]
+        public string CustomerBankBranchDigit { get; set; }
 
         public void GenerateSignature(string endpointId, string secret)
         {

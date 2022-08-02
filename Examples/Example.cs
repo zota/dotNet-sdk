@@ -96,6 +96,12 @@
                 RedirectUrl = "https://example-merchant.com/payment/return",
                 CheckoutUrl = "https://example-merchant.com/deposit",
                 CallbackUrl = "https://ens39ypv7jld8.x.pipedream.net",
+                CustomerCountryCode = "TH",
+                CustomerPersonalID = "12345678",
+                CustomerBankAccountNumberDigit = "02",
+                CustomerBankAccountType = "03",
+                CustomerBankSwiftCode = "123456789",
+                CustomerBankBranchDigit = "04",
             };
 
             // Initiate deposit order request
