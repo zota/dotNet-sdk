@@ -25,7 +25,7 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
@@ -43,7 +43,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
 	<ItemGroup>
-		<None Include="..\images\zota-logo-nuget.png" Pack="true" PackagePath="\"/>
+		<None Include="..\images\zota-logo-nuget.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 </Project>
