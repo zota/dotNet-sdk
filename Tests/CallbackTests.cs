@@ -1,6 +1,7 @@
 ﻿namespace Tests
 {
     using NUnit.Framework;
+    using NUnit.Framework.Legacy;
 
     public class CallbackTests
     {
@@ -14,10 +15,10 @@
             // Act
             var actual = client.Parse(callback);
 
-            // Assert
-            Assert.IsTrue(actual.IsVerified);
-            Assert.IsEmpty(actual.ErrorMessage);
-            Assert.AreEqual("APPROVED", actual.Status);
+            // ClassicAssert
+            ClassicAssert.IsTrue(actual.IsVerified);
+            ClassicAssert.IsEmpty(actual.ErrorMessage);
+            ClassicAssert.AreEqual("APPROVED", actual.Status);
         }
 
         [Test]
@@ -31,9 +32,9 @@
             // Act
             var actual = client.Parse(callback);
 
-            // Assert
-            Assert.IsFalse(actual.IsVerified);
-            Assert.AreEqual(expectedErrorMessage, actual.ErrorMessage);
+            // ClassicAssert
+            ClassicAssert.IsFalse(actual.IsVerified);
+            ClassicAssert.AreEqual(expectedErrorMessage, actual.ErrorMessage);
         }
 
         [Test]
@@ -47,9 +48,9 @@
             // Act
             var actual = client.Parse(callback);
 
-            // Assert
-            Assert.IsFalse(actual.IsVerified);
-            Assert.AreEqual(expectedErrorMessage, actual.ErrorMessage);
+            // ClassicAssert
+            ClassicAssert.IsFalse(actual.IsVerified);
+            ClassicAssert.AreEqual(expectedErrorMessage, actual.ErrorMessage);
         }
     }
 }

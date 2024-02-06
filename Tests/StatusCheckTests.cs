@@ -3,6 +3,7 @@
     using NUnit.Framework;
     using System.Net;
     using Zotapay.Models.OrderStatusCheck;
+    using NUnit.Framework.Legacy;
 
     class StatusCheckTests
     {
@@ -17,9 +18,9 @@
             // Act 
             MGQueryTxnResult actual = client.CheckOrderStatus(queryRequest).Result;
 
-            // Assert
-            Assert.IsFalse(actual.IsSuccess);
-            Assert.AreEqual(expectedMessage, actual.Message);
+            // ClassicAssert
+            ClassicAssert.IsFalse(actual.IsSuccess);
+            ClassicAssert.AreEqual(expectedMessage, actual.Message);
         }
 
         [Test]
@@ -38,9 +39,9 @@
             // Act
             var actual = client.CheckOrderStatus(queryRequest).Result;
 
-            // Assert
-            Assert.IsTrue(actual.IsSuccess);
-            Assert.AreEqual("APPROVED", actual.Data.status);
+            // ClassicAssert
+            ClassicAssert.IsTrue(actual.IsSuccess);
+            ClassicAssert.AreEqual("APPROVED", actual.Data.status);
         }
     }
 }
