@@ -7,7 +7,7 @@
 		<LangVersion>8.0</LangVersion>
 		<NeutralLanguage>en</NeutralLanguage>
 		<PackageId>Zotapay</PackageId>
-		<TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<Authors>kantonov</Authors>
 		<OutputType>Library</OutputType>
 		<Copyright>© 2021 Zota Technology LTD</Copyright>
@@ -25,8 +25,8 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
 

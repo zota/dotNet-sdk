@@ -4,14 +4,12 @@ on:
   push:
     branches: [ master ]
     paths-ignore:
-      - '.github/**'
       - 'Examples/**'
       - 'README**'
   pull_request:
     branches: [ master ]
     types: [ opened, synchronize ]
     paths-ignore:
-      - '.github/**'
       - 'Examples/**'
       - 'README**'
 
@@ -64,36 +62,26 @@ jobs:
           ${{ runner.os }}-nuget-
           
     # Setup .NET frameworks
-    - name: Setup .NET Core 2.1
+    - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-       dotnet-version: '2.1'
-    - name: Setup .NET Core 3.1
-      uses: actions/setup-dotnet@v1
-      with:
-       dotnet-version: '3.1'
-    - name: Setup .NET Core 5.0
-      uses: actions/setup-dotnet@v1
-      with:
-       dotnet-version: '5.0'
+        dotnet-version: '8.0'
 
     - name: Setup NuGet
       uses: nuget/setup-nuget@v1
 
-    # install dependencies 
+    # Install dependencies 
     - name: NuGet Restore
       run: nuget restore ZotapaySDK.sln
       
-    # build project
+    # Build project
     - name: Build
       run: dotnet build --configuration ${{env.config}} --no-restore
       
     # run tests with built project
     - name: Test
       run: |
-        dotnet test --framework netcoreapp2.1 --no-restore --no-build --configuration ${{env.config}} --logger GitHubActions
-        dotnet test --framework netcoreapp3.1 --no-restore --no-build --configuration ${{env.config}}
-        dotnet test --framework net5.0 --no-restore --no-build --configuration ${{env.config}} --settings coverlet.runsettings
+        dotnet test --framework net8.0 --no-restore --no-build --configuration ${{env.config}} --settings coverlet.runsettings
 
     - name: Upload coverage
       uses: codecov/codecov-action@v1

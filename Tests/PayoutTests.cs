@@ -4,6 +4,7 @@
     using System.Net;
     using Zotapay;
     using Zotapay.Models.Payout;
+    using NUnit.Framework.Legacy;
 
     public class PayoutTests
     {
@@ -49,12 +50,12 @@
             // Act
             MGPayoutResult actual = client.InitPayout(payoutRequest).Result;
 
-            // Assert
-            Assert.IsTrue(actual.IsSuccess);
-            Assert.AreEqual(expectedResult.Code, actual.Code);
-            Assert.AreEqual(expectedResult.Message, actual.Message);
-            Assert.AreEqual(expectedResult.Data.orderID, actual.Data.orderID);
-            Assert.AreEqual(expectedResult.Data.merchantOrderID, actual.Data.merchantOrderID);
+            // ClassicAssert
+            ClassicAssert.IsTrue(actual.IsSuccess);
+            ClassicAssert.AreEqual(expectedResult.Code, actual.Code);
+            ClassicAssert.AreEqual(expectedResult.Message, actual.Message);
+            ClassicAssert.AreEqual(expectedResult.Data.orderID, actual.Data.orderID);
+            ClassicAssert.AreEqual(expectedResult.Data.merchantOrderID, actual.Data.merchantOrderID);
         }
 
         [Test]
@@ -99,11 +100,11 @@
             // Act
             MGPayoutResult actual = client.InitPayout(payoutRequest).Result;
 
-            // Assert
-            Assert.IsFalse(actual.IsSuccess);
-            Assert.AreEqual(expectedResult.Code, actual.Code);
-            Assert.AreEqual(expectedResult.Message, actual.Message);
-            Assert.AreEqual(expectedResult.Data, actual.Data);
+            // ClassicAssert
+            ClassicAssert.IsFalse(actual.IsSuccess);
+            ClassicAssert.AreEqual(expectedResult.Code, actual.Code);
+            ClassicAssert.AreEqual(expectedResult.Message, actual.Message);
+            ClassicAssert.AreEqual(expectedResult.Data, actual.Data);
         }
     }
 }

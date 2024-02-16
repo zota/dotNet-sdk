@@ -6,6 +6,7 @@ namespace Tests
     using Zotapay.Models;
     using Zotapay.Models.Deposit;
     using Zotapay;
+    using NUnit.Framework.Legacy;
 
     public class Tests
     {
@@ -50,13 +51,13 @@ namespace Tests
             // Act
             MGDepositResult actual = client.InitDeposit(DepositRequest).Result;
 
-            // Assert
-            Assert.IsTrue(actual.IsSuccess);
-            Assert.AreEqual(expectedResult.Data.DepositUrl, actual.Data.DepositUrl);
-            Assert.AreEqual(expectedResult.Data.MerchantOrderID, actual.Data.MerchantOrderID);
-            Assert.AreEqual(expectedResult.Data.OrderID, actual.Data.OrderID);
-            Assert.AreEqual(expectedResult.Code, actual.Code);
-            Assert.AreEqual(expectedResult.Message, actual.Message);
+            // ClassicAssert
+            ClassicAssert.IsTrue(actual.IsSuccess);
+            ClassicAssert.AreEqual(expectedResult.Data.DepositUrl, actual.Data.DepositUrl);
+            ClassicAssert.AreEqual(expectedResult.Data.MerchantOrderID, actual.Data.MerchantOrderID);
+            ClassicAssert.AreEqual(expectedResult.Data.OrderID, actual.Data.OrderID);
+            ClassicAssert.AreEqual(expectedResult.Code, actual.Code);
+            ClassicAssert.AreEqual(expectedResult.Message, actual.Message);
         }
 
         [Test]
@@ -78,11 +79,11 @@ namespace Tests
             // Act
             MGDepositResult actual = client.InitDeposit(DepositRequest).Result;
 
-            // Assert
-            Assert.IsFalse(actual.IsSuccess);
-            Assert.AreEqual(expectedResult.Data, actual.Data);
-            Assert.AreEqual(expectedResult.Code, actual.Code);
-            Assert.AreEqual(expectedResult.Message, actual.Message);
+            // ClassicAssert
+            ClassicAssert.IsFalse(actual.IsSuccess);
+            ClassicAssert.AreEqual(expectedResult.Data, actual.Data);
+            ClassicAssert.AreEqual(expectedResult.Code, actual.Code);
+            ClassicAssert.AreEqual(expectedResult.Message, actual.Message);
         }
 
         [Test]
@@ -99,9 +100,9 @@ namespace Tests
             // Act
             MGDepositResult actual = client.InitDeposit(DepositRequest).Result;
 
-            // Assert
-            Assert.IsFalse(actual.IsSuccess);
-            Assert.AreEqual(expectedErrorMessage, actual.Message);
+            // ClassicAssert
+            ClassicAssert.IsFalse(actual.IsSuccess);
+            ClassicAssert.AreEqual(expectedErrorMessage, actual.Message);
         }
 
         [Test]
@@ -119,9 +120,9 @@ namespace Tests
             // Act
             MGDepositResult actualDepositResult = clientMock.InitDeposit(depositRequest).Result;
 
-            // Assert
-            Assert.IsFalse(actualDepositResult.IsSuccess);
-            Assert.AreEqual(expectedErrorMessage, actualDepositResult.Message);
+            // ClassicAssert
+            ClassicAssert.IsFalse(actualDepositResult.IsSuccess);
+            ClassicAssert.AreEqual(expectedErrorMessage, actualDepositResult.Message);
         }
 
         [Test]
@@ -141,8 +142,8 @@ namespace Tests
             // Act
             request.GenerateSignature(endpointId, secret);
 
-            // Assert
-            Assert.AreEqual(expectedSignature, request.Signature);
+            // ClassicAssert
+            ClassicAssert.AreEqual(expectedSignature, request.Signature);
         }
 
         [Test]
@@ -157,8 +158,8 @@ namespace Tests
             // Act
             MGClient client = new MGClient(merchantSecret, endpointId, requestUrl, merchantId);
 
-            // Assert
-            Assert.IsNotNull(client);
+            // ClassicAssert
+            ClassicAssert.IsNotNull(client);
         }
 
         [Test]
@@ -172,9 +173,9 @@ namespace Tests
             // Act
             MGDepositResult actual = client.InitDeposit(request).Result;
 
-            // Assert
-            Assert.IsFalse(actual.IsSuccess);
-            Assert.AreEqual(expectedErrorMessage, actual.Message);
+            // ClassicAssert
+            ClassicAssert.IsFalse(actual.IsSuccess);
+            ClassicAssert.AreEqual(expectedErrorMessage, actual.Message);
         }
 
         [Test]
@@ -188,9 +189,9 @@ namespace Tests
             // Act
             var actualResult = await clientWithConfig.InitCardDeposit(DepositOrderRequest);
 
-            // Assert
-            Assert.IsFalse(actualResult.IsSuccess);
-            Assert.AreEqual(expectedErrorMessage, actualResult.Message);
+            // ClassicAssert
+            ClassicAssert.IsFalse(actualResult.IsSuccess);
+            ClassicAssert.AreEqual(expectedErrorMessage, actualResult.Message);
         }
     }
 }
