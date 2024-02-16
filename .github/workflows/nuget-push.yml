@@ -42,7 +42,9 @@ jobs:
         run: dotnet build Zotapay --configuration Release --no-restore /p:Version=${{github.event.release.tag_name}}
 
       - name: Package
-        run: dotnet pack --no-build --configuration Release Zotapay/Zotapay.csproj --output . /p:Version=${{github.event.release.tag_name}}
+        run: |
+          dotnet pack --no-build --configuration Release Zotapay/Zotapay.csproj --output . /p:Version=${{github.event.release.tag_name}}
+          ls -la
 
       - name: Push Package
         run: dotnet nuget push *.nupkg --source https://api.nuget.org/v3/index.json --skip-duplicate --api-key ${{secrets.NUGET_API_KEY}}
