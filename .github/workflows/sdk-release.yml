@@ -5,6 +5,14 @@ on:
 
 name: SDK Release
 
+permissions:
+  contents: write
+  packages: write
+  deployments: read
+  actions: read
+  checks: read
+  pull-requests: read
+
 jobs:
   build:
     name: SDK Release Creation
