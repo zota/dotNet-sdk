@@ -22,6 +22,7 @@
 		<Title>Zotapay C# SDK</Title>
 		<Description>Zotapay is a next-generation payment services and technology provider for alternative payments.</Description>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<IsPackable>true</IsPackable>
 	</PropertyGroup>
 
   <ItemGroup>
