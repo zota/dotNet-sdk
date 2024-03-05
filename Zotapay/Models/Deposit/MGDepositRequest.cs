@@ -14,8 +14,6 @@
     [DataContract]
     public class MGDepositRequest : IMGRequest
     {
-        // todo try default without dataMember
-        // OR use strategy from newtonsoft
 
         /// <summary>
 	    /// Default constructor
@@ -131,6 +129,13 @@
         [StringLength(8)]
         [DataMember(Name = "customerBankCode", IsRequired = true, EmitDefaultValue = false)]
         public string CustomerBankCode { get; set; }
+
+        /// <summary>
+        /// End user bank account number
+        /// </summary>
+        [StringLength(64)]
+        [DataMember(Name = "customerBankAccountNumber", IsRequired = false, EmitDefaultValue = false)]
+        public string CustomerBankAccountNumber { get; set; }
 
         /// <summary>
         /// URL for end user redirection upon transaction completion, regardless of order status
