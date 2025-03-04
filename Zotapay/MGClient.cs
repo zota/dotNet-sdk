@@ -163,7 +163,43 @@
         /// <returns>Task<DepositCardResponseData> containing Zotapay API response</returns>
         public async Task<MGDepositCardResult> InitCardDeposit(MGDepositCardRequest requestPayload)
         {
-            var result = await Send(requestPayload);
+            // Direct card integration is broken into two requests: deposit and card
+            MGDepositRequest depositRequest = new MGDepositRequest
+            {
+                MerchantOrderID = requestPayload.MerchantOrderID,
+                OrderAmount = requestPayload.OrderAmount,
+                CustomerEmail = requestPayload.CustomerEmail,
+                OrderCurrency = requestPayload.OrderCurrency,
+                MerchantOrderDesc = requestPayload.MerchantOrderDesc,
+                CustomerFirstName = requestPayload.CustomerFirstName,
+                CustomerLastName = requestPayload.CustomerLastName,
+                CustomerAddress = requestPayload.CustomerAddress,
+                CustomerCity = requestPayload.CustomerCity,
+                CustomerCountryCode = requestPayload.CustomerCountryCode,
+                CustomerZipCode = requestPayload.CustomerZipCode,
+                CustomerPhone = requestPayload.CustomerPhone,
+                CustomerIP = requestPayload.CustomerIP,
+                RedirectUrl = requestPayload.RedirectUrl,
+                CheckoutUrl = requestPayload.CheckoutUrl,
+                CallbackUrl = requestPayload.CallbackUrl,
+                IsDirectCC = true
+            };
+
+            var result = await Send(depositRequest);
+            MGDepositCardResult cardResult = new MGDepositCardResult{
+                Code = result.Code,
+                IsSuccess = result.IsSuccess,
+                Message = result.Message
+            };
+            if (!cardResult.IsSuccess)
+            {
+                return cardResult;
+            }
+
+            CardDataRequest cardRequest = new CardDataRequest{
+                
+            };
+
             return (MGDepositCardResult)result;
         }
 

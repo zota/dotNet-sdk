@@ -54,6 +54,11 @@
             public const string PATH_DEPOSIT = BASE_URL + "/deposit/request/{0}/";
 
             /// <summary>
+            /// Deposit path with an endpoint id for direct card requests
+            /// </summary>
+            public const string PATH_DEPOSIT_DIRECT = BASE_URL + "/deposit/request/direct/{0}/";
+
+            /// <summary>
             /// Order status check path
             /// </summary>
             public const string PATH_STATUS_CHECK = BASE_URL + "/query/order-status/";
