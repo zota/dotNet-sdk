@@ -7,6 +7,7 @@
     using Zotapay.Models.Payout;
     using Zotapay.Callback;
     using Zotapay;
+    using Zotapay.Models.Deposit;
 
     class Example
     {
@@ -15,6 +16,7 @@
             // MGClient client = CreateClientWithEnvVarExample();
             MGClient client = CreateClientWithExplicitConfig();
 
+            DepositCCDirectExample(client);
             DepositExample(client);
             QueryOrderExample(client);
             PayoutExample(client);
@@ -24,6 +26,7 @@
         public static MGClient CreateClientWithExplicitConfig()
         {
             // Credentials are hardcoded for showcase purposes - do not use hardcoded credentials on live environment
+            // TODO: revert
             MGClient clientWithConfig = new MGClient(
                 merchantSecret: "merchant-secret-key",
                 endpointId: "400007",
@@ -51,6 +54,47 @@
             // ZotaPay's Meta Gate client constructed with environment variables
             MGClient client = new MGClient(useConstantUrl: true, environment: Constants.MGEnvironment.Sandbox); // Constants.MGEnvironment.Live
             return client;
+        }
+
+        public static void DepositCCDirectExample(MGClient client)
+        {
+            // Assemble deposit order data
+            MGDepositCardRequest DepositDirectCCOrderRequest = new MGDepositCardRequest
+            {
+                MerchantOrderID = "QvE8dZshpKhaOmHY1",
+                OrderAmount = "100.00",
+                CustomerEmail = "customer@test.com",
+                OrderCurrency = "USD",
+                MerchantOrderDesc = "desc",
+                CustomerFirstName = "John",
+                CustomerLastName = "Doe",
+                CustomerAddress = "The Moon, hill 42",
+                CustomerCity = "Sofia",
+                CustomerCountryCode = "BG",
+                CustomerZipCode = "1303",
+                CustomerPhone = "123",
+                CustomerIP = "127.0.0.1",
+                RedirectUrl = "https://example-merchant.com/payment/return",
+                CheckoutUrl = "https://example-merchant.com/deposit",
+                CallbackUrl = "https://example-merchant.com/payment/callback",
+            };
+
+            // Initiate deposit order request
+            MGDepositCardResult resp = client.InitCardDeposit(DepositDirectCCOrderRequest).Result;
+
+            // Check the request status
+            if (!resp.IsSuccess)
+            {
+                // handle unsuccessful request
+                string reasonForFailure = resp.Message;
+                // ...
+                return;
+            }
+
+            // Once no errors are encountered, 
+            // order should be checked via status check or resolved by callback from Zota
+            DepositCardResponseData data = resp.Data;
+            Console.WriteLine(data);
         }
 
         public static void ParseCallbackExample(MGClient client)

@@ -192,6 +192,11 @@
         }
 
         /// <summary>
+        /// Indicates, wether request is using direct credit card API
+        /// </summary>
+        internal bool IsDirectCC;
+
+        /// <summary>
         /// Gets the full request url
         /// </summary>
         /// <param name="baseUrl">Base url of the domain</param>
@@ -199,6 +204,12 @@
         /// <returns>The full deposit request url</returns>
         public string GetRequestUrl(string baseUrl, string endpoint)
         {
+            if (this.IsDirectCC)
+            {
+                string urlDirectPath = string.Format(URL.PATH_DEPOSIT_DIRECT, endpoint);
+                return baseUrl + urlDirectPath;
+            }
+
             string urlPath = string.Format(URL.PATH_DEPOSIT, endpoint);
             return baseUrl + urlPath;
         }
