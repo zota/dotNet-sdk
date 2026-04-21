@@ -1,26 +1,26 @@
-[![codecov](https://codecov.io/gh/zotapay/dotNet-sdk/branch/master/graph/badge.svg?token=E49V7QD7XW)](https://codecov.io/gh/zotapay/dotNet-sdk)
-![.NET Core Lib Test](https://github.com/zotapay/dotNet-sdk/workflows/.NET%20Core%20Build/badge.svg)
+[![codecov](https://codecov.io/gh/zota/dotNet-sdk/branch/master/graph/badge.svg?token=E49V7QD7XW)](https://codecov.io/gh/zota/dotNet-sdk)
+![.NET Core Lib Test](https://github.com/zota/dotNet-sdk/workflows/.NET%20Core%20Build/badge.svg)
 
-![c#-github](https://user-images.githubusercontent.com/174284/106497440-b6e9a600-64c6-11eb-9a12-83ec95725cea.jpg)
+![csharp](https://github.com/user-attachments/assets/a637bb1f-ad06-4bd8-bd6b-3785f58cf7ad)
 
 # Official .NET REST API SDK
-This is the **official** page of the [Zotapay](http://www.zotapay.com) .NET SDK. It is intended to be used by 
-developers who run modern .NET applications and would like to integrate our next generation payments platform.
+This is the **official** page of the [Zota](http://www.zota.com) .NET SDK. It is intended to be used by 
+developers who run modern .NET applications and would like to integrate our next-generation payments platform.
 
-> This SDK is also available as a NuGet package here: https://www.nuget.org/packages/Zotapay.
+> This SDK is also available as a NuGet package here: https://www.nuget.org/packages/Zota.
  
 ## Developer Resources
 
-Documentation on the developer tools, various other SDKs and the API documentation this SDK implements are available on the [Zotapay Developers Portal](https://developers.zotapay.com/).
+Documentation on the developer tools, various other SDKs and the API documentation this SDK implements are available on the [Zota Developers Portal](https://developers.zota.com/).
 
 ## Introduction
 This .NET SDK provides all the necessary methods for integrating the Zotapay Merchant API. 
 This SDK is to be used by clients, as well as all the related eCommerce plugins for .NET applications.
 
-The SDK covers all available functionality that ZotaPay's Merchant API exposes.
+The SDK covers all available functionality that Zota's Merchant API exposes.
 
 ### Requirements
-* A functioning Zotapay Sandbox or Production account and related credentials
+* A functioning Zota Sandbox or Production account and related credentials
 * netstandard2.0 (or higher)
 
 ### Supported .NET versions
@@ -32,13 +32,13 @@ The SDK covers all available functionality that ZotaPay's Merchant API exposes.
 
 ### Installation
 ```sh
-dotnet package add zotapay
+dotnet package add zota
 ```
 
 
 ## Configuration
 
-[API CONFIGURATION DOCS](https://doc.zotapay.com/deposit/1.0/?.NET#before-you-begin)
+[API CONFIGURATION DOCS](https://doc.zota.com/deposit/1.0/?.NET#before-you-begin)
 
 Credentials for the SDK can be passed in 2 different ways:
 1. To the `MGClient` itself
@@ -48,7 +48,7 @@ This part of the documentation will guide you on how to configure and use this S
 
 ### Before you begin
 
-To use this API, obtain the following credentials from Zotapay:
+To use this API, obtain the following credentials from Zota:
 
 ```
 MerchantID	        A merchant unique identifier, used for identification.
@@ -56,10 +56,10 @@ MerchantSecretKey	A secret key to keep privately and securely, used for authenti
 EndpointID	        One or more unique endpoint identifiers to use in API requests.
 ```
 
-Contact [Zotapay](https://zotapay.com/contact/) to start your onboarding process and obtain all the credentials.
+Contact [Zota Sales](https://zota.com/contact/) to start your onboarding process and obtain credentials.
 
 ### API Url
-There are two environments to use with the Zotapay API:
+There are two environments to use with the Zota API:
 
 > Sandbox environment, used for integration and testing purposes.
 `https://api.zotapay-sandbox.com`
@@ -74,12 +74,12 @@ configuration is the one passed to the client itself.
 
 Example:
 ```csharp
-using Zotapay;
+using Zota;
 
 MGClient client = new MGClient(merchantSecret: "merchant-secret-key",
                                     endpointId: "400009",
                                     merchantId: "merchant-id",
-                                    requestUrl: "https://secure.zotapay-stage.com");
+                                    requestUrl: "https://secure.zota-stage.com");
 ```
 
 Passing configuration to the client itself is best when supporting multiple clients.
@@ -89,17 +89,17 @@ Passing configuration to the client itself is best when supporting multiple clie
 There are 4 environment variables that need to be set for the API SDK to be configured correctly:
 
 ```
-ZOTAPAY_MERCHANT_ID             - MerchantID as received from Zotapay
-ZOTAPAY_MERCHANT_SECRET_KEY     - MerchantSecretKey as received from Zotapay
-ZOTAPAY_ENDPOINT_ID             - EndpointID as received from Zotapay
-ZOTAPAY_REQUEST_URL             - https://api.zotapay-sandbox.com or https://api.zotapay.com
+ZOTA_MERCHANT_ID             - MerchantID as received from Zota
+ZOTA_MERCHANT_SECRET_KEY     - MerchantSecretKey as received from Zota
+ZOTA_ENDPOINT_ID             - EndpointID as received from Zota
+ZOTA_REQUEST_URL             - https://api.zotapay-sandbox.com or https://api.zotapay.com
 ```
 
 
 ## Usage
 In order to use the SDK we need to instantiate a client:
 ```csharp
-using Zotapay;
+using Zota;
 
 MGClient client = new MGClient(useConstantUrl: true, environment: Constants.MGEnvironment.Sandbox);
 ```
@@ -109,7 +109,7 @@ MGClient client = new MGClient(useConstantUrl: true, environment: Constants.MGEn
 Construct the deposit request:
 
 ```csharp
-using Zotapay.Models;
+using Zota.Models;
 
 MGDepositRequest DepositOrderRequest = new MGDepositRequest
 {
@@ -132,11 +132,11 @@ MGDepositRequest DepositOrderRequest = new MGDepositRequest
 };
 ```
 
-or alternatively set its properties after instantiating to see the intellisense hints with description for each parameter:
+or alternatively, set its properties after instantiating to see the Intellisense hints with description for each parameter:
 
 
 ```csharp
-using Zotapay.Models;
+using Zota.Models;
 
 MGDepositRequest DepositOrderRequest = new MGDepositRequest();
 
@@ -159,10 +159,10 @@ DepositOrderRequest.CallbackUrl = "https://example-merchant.com/payment/callback
 
 ```
 
-Sending the request to Zotapay happens through the client:
+Sending the request to Zota happens through the client:
 
 ```csharp
-using Zotapay.Models;
+using Zota.Models;
 
 MGDepositResult depositResponse = await client.InitDeposit(DepositOrderRequest);
 
@@ -181,9 +181,9 @@ string paymentUrl = depositResponse.Data.DepositUrl;
 
 
 ### Working with `Deposit Response`
-Each deposit attempt against a Zotapay returns either a `MGDepositResult` or `MGDepositCardResult`.
+Each deposit attempt against a Zota returns either a `MGDepositResult` or `MGDepositCardResult`.
 
-The above objects are simply a wrapper around the standard HTTP response as described [here](https://doc.zotapay.com/deposit/1.0/?.NET#issue-a-deposit-request).
+The above objects are simply a wrapper around the standard HTTP response as described [here](https://doc.zota.com/deposit/1.0/?.NET#issue-a-deposit-request).
  
 ## Payout
 Sending a payout request is almost identical to sending a deposit request.
@@ -191,7 +191,7 @@ Sending a payout request is almost identical to sending a deposit request.
 The request is built:
 
 ```csharp
-using Zotapay.Models;
+using Zota.Models;
 
 MGPayoutRequest payoutRequest = new MGPayoutRequest
 {
@@ -256,7 +256,7 @@ string status = orderResponse.Data.status;
 ```
 
 ## Callbacks
-`MGClient` has a `Parse()` method, that will validate the raw HTTP Request payload sent from Zotapay to the configured endpoint and return `MGCallback` object. 
+`MGClient` has a `Parse()` method, that will validate the raw HTTP Request payload sent from Zota to the configured endpoint and return `MGCallback` object. 
 Its purpose is to make working with callbacks manageable. Example:
 
 ```csharp
@@ -274,9 +274,9 @@ if (!callback.IsVerified) {
 ## Validations
 All request objects passed to the `MGClient` will get validated. If an invalid member is found, the message will contain a full description and no 
 actual call to the API will be made, hence the `Code` property showing the HTTP will be null. The purpose is to check whether all the values passsed to the different
-parameters is in-line with what Zotapay's endpoint expects. See the API DOCS for more info and guidance about the
+parameters is in-line with what Zota's endpoint expects. See the API DOCS for more info and guidance about the
 format of the different parameters.
 
 ## Test Coverage
 
-[![codecov](https://codecov.io/gh/zotapay/dotNet-sdk/graphs/tree.svg?width=650&height=150&src=pr&token=E49V7QD7XW)](https://codecov.io/gh/zotapay/dotNet-sdk/)
+[![codecov](https://codecov.io/gh/zota/dotNet-sdk/graphs/tree.svg?width=650&height=150&src=pr&token=E49V7QD7XW)](https://codecov.io/gh/zota/dotNet-sdk/)
