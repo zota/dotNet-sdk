@@ -32,7 +32,7 @@ The SDK covers all available functionality that Zota's Merchant API exposes.
 
 ### Installation
 ```sh
-dotnet package add zota
+dotnet package add Zotapay
 ```
 
 
