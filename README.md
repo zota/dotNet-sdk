@@ -7,7 +7,7 @@
 This is the **official** page of the [Zota](http://www.zota.com) .NET SDK. It is intended to be used by 
 developers who run modern .NET applications and would like to integrate our next-generation payments platform.
 
-> This SDK is also available as a NuGet package here: https://www.nuget.org/packages/Zota.
+> This SDK is also available as a NuGet package here: https://www.nuget.org/packages/Zotapay.
  
 ## Developer Resources
 
